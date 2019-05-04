@@ -1,6 +1,22 @@
 #include <fila.h>
 
-process * removeFirst (queue * q)
+newEntryQueue()
+{
+    entryQueue * entry = (entryQueue *) malloc(sizeof(entryQueue));
+    entry->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+
+    return entry;
+}
+
+newReadyQueue()
+{
+    readyQueue * ready = (readyQueue *) malloc(sizeof(readyQueue));
+    ready->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+
+    return ready;
+}
+
+process * removeFromQueue (struct queue * q)
 {
     if (q->first != NULL)
     {
@@ -18,7 +34,7 @@ process * removeFirst (queue * q)
     return NULL;                            // queue was empty
 }
 
-int insert (process * p, queue * q)
+int insertIntoQueue (process * p, struct queue * q)
 {
     if (q->last == NULL)
     {                                       // no process in queue, so p is the first

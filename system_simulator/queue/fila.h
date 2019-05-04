@@ -9,16 +9,27 @@
     typedef struct queue    
     {
         process * first;
-        process * last;     
-    } queue;
-    // mutex for entry queue       
-    pthread_mutex_t entryLock = PTHREAD_MUTEX_INITIALIZER;
+        process * last;  
+        pthread_mutex_t lock;  
+    } entryQueue;
 
-    // mutex for ready queue
-    pthread_mutex_t readyLock = PTHREAD_MUTEX_INITIALIZER;
+     typedef struct queue    
+    {
+        process * first;
+        process * last;  
+        pthread_mutex_t lock;  
+    } readyQueue;
+
+     // creates new entry queue
+    newEntryQueue();
+
+    // creates new ready queue
+    newReadyQueue();
+
     // receives a queue, remove the first process from it and return the removed process
-    process * removeFirst (queue * q);
+    process * removeFirst (struct queue * q);
 
     // receives a process  and a queue and inserts the process into the end of the queue. Returns pid
-    int insert (process * p, queue * q);
+    int insert (process * p, struct queue * q);
+
 #endif

@@ -8,11 +8,9 @@
     typedef struct cpu
     {
         int timeQuantum;
+        pthread_mutex_t lock;
     }cpu;
 
-    // mutex for cpu
-    pthread_mutex_t cpuLock = PTHREAD_MUTEX_INITIALIZER;
-
     // Gives the process its share of cpu usage
-    void * workOnProcess (cpu * c, process * p);
+    void * workOnProcess (cpu * c, process * p, memory * mem);
 #endif
