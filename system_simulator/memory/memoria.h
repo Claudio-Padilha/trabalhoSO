@@ -15,11 +15,7 @@ typedef struct memory
 } memory;
 
 // lock is the memory mutex.
-pthread_mutex_t memoryLock;
-
-// newMemory creates and initilize a memory struct
-// with buffer length of size.
-memory *newMemory(int size);
+pthread_mutex_t memoryLock = PTHREAD_MUTEX_INITIALIZER;
 
 #endif
 	
