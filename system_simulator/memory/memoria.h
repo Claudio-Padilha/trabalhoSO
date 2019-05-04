@@ -2,14 +2,14 @@
 #define  MEMORIA_H
 
 #include <pthread.h>
-#include "process.h"
+#include "../processo.h"
 
 typedef struct memory
 {
 	// lock is the memory mutex.
 	pthread_mutex_t lock;
  	// memory is represented by a list. This points to the first process of the list.
-	process * buffer;      
+	processo * first;      
 	// amount of memory used.
 	int used;
 	// size of buffer.

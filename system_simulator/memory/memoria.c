@@ -1,20 +1,20 @@
 #include <pthread.h>
+#include <stdlib.h>
 #include "memoria.h"
-#include "process.h"
-#include "dbg.h"
+#include "../processo.h"
+#include "../dbg.h"
 
 memory *newMemory(int size) {
 	memory *m = malloc(sizeof(memory));
 	check(m != NULL, "failed to malloc memory");
 
-	m->buffer = calloc(size, sizeof(process));
-	check(m->buffer != NULL, "failed to malloc memory->buffer");
+	pthread_mutex_init(&(m->lock), NULL);
 
-	m->lock = PTHREAD_MUTEX_INITIALIZER;
+	m->first = NULL;
 	m->used = 0;
 	m->size = size;
 
-	return memory;
+	return m;
 error:
 	return NULL;
 }
