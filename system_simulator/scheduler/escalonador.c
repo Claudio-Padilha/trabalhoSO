@@ -5,7 +5,7 @@
 void * schedulerFCFS (queue entry, queue ready, memory mem) 
 {   
     pthread_mutex_lock(&entryLock);                                          // aquire entry queue lock
-    pthread_mutex_lock(&memoryLock);                 /**** SHOULD IT AQUIRE MEMORY LOCK TOO? (it reads from memory - memory.used parameter is variable) *****/
+    pthread_mutex_lock(&memoryLock);                 /**** SHOULD IT AQUIRE MEMORY LOCK TOO? (it reads from memory structure - memory.used parameter is variable) *****/
         if (entry.first == NULL)
         {
             return NULL;                                                    // queue is empty
@@ -24,7 +24,7 @@ void * schedulerFCFS (queue entry, queue ready, memory mem)
             printf("Escalonador FCFS de longo prazo não retirou o processo %d da fila de entrada porque não há espaço na memória", entry.first->id);
         }
     pthread_mutex_unlock(&entryLock);                                        // releases entry queue lock
-    pthread_mutex_unlock(&memoryLock);
+    pthread_mutex_unlock(&memoryLock);                                       // releases memory lock
 }
 
 
