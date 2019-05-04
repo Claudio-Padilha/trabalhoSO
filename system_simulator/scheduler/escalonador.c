@@ -14,9 +14,8 @@ void * schedulerFCFS (entryQueue * entry, readyQueue * ready, memory * mem)
         {
             printf("Escalonador FCFS de longo prazo escolheu o processo %d", entry->first->id);
 
-            process * p = removeFirst(entry);                               // removes and gets the first process from entry queue
-
-            insert(p, ready);                                               // inserts the process into ready queue
+            process * p = removeFromQueue(entry);                               // removes and gets the first process from entry queue
+            insertIntoQueue(p, ready);                                               // inserts the process into ready queue
 
             printf("Escalonador FCFS de longo prazo retirou o processo %d da fila de entrada, colocando-o na fila de prontos", p->id);
         }else 
