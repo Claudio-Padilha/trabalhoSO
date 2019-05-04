@@ -8,7 +8,7 @@ typedef struct process
     int burstTime;           // CPU burst time
     int size;
 
-    struct process * next;  // when in memory points to the next process of the list
+    struct process * next;  // when in memory or queue points to the next process
 } process;
 
 #endif

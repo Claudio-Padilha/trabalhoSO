@@ -14,5 +14,5 @@
     pthread_mutex_t cpuLock = PTHREAD_MUTEX_INITIALIZER;
 
     // Gives the process its share of cpu usage
-    void * workOnProcess (cpu c, process * p);
+    void * workOnProcess (cpu * c, process * p);
 #endif
