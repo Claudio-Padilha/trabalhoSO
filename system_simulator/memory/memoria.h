@@ -8,13 +8,13 @@ typedef struct memory
 {
  	// memory is represented by a list. This points to the first process of the list. NOT A BUFFER
 	process * buffer;      
-	// amount of memory used.
+	// amount of memory used
 	int used;
-	// size of buffer.
+	// memory size
 	int size;
 } memory;
 
-// lock is the memory mutex.
+// memory mutex
 pthread_mutex_t memoryLock = PTHREAD_MUTEX_INITIALIZER;
 
 #endif

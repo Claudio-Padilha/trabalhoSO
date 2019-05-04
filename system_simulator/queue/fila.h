@@ -20,5 +20,5 @@
     process * removeFirst (queue * q);
 
     // receives a process  and a queue and inserts the process into the end of the queue. Returns pid
-    int insert (process * p,queue * q);
+    int insert (process * p, queue * q);
 #endif

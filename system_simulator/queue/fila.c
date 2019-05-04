@@ -1,6 +1,4 @@
 #include <fila.h>
-// Lists representing entry queue and ready queue
-// entry queue
 
 process * removeFirst (queue * q)
 {
