@@ -9,7 +9,7 @@ typedef struct memory
 	// lock is the memory mutex.
 	pthread_mutex_t lock;
  	// memory is represented by a list. This points to the first process of the list.
-	processo * first;      
+	process * first;      
 	// amount of memory used.
 	int used;
 	// size of buffer.
