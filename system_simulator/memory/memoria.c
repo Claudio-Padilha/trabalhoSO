@@ -1,9 +1,20 @@
-#include <processo.h> 
+#include <pthread.h>
+#include "memoria.h"
+#include "process.h"
+#include "dbg.h"
 
-typedef struct memory
-{
-    process * buffer;       // memory is represented by a list. This points to the first process of the list
-    int used;               // amount of memory used          
-    int size;               // total storage capacity
-} memory;
+memory *newMemory(int size) {
+	memory *m = malloc(sizeof(memory));
+	check(m != NULL, "failed to malloc memory");
 
+	m->buffer = calloc(size, sizeof(process));
+	check(m->buffer != NULL, "failed to malloc memory->buffer");
+
+	m->lock = PTHREAD_MUTEX_INITIALIZER;
+	m->used = 0;
+	m->size = size;
+
+	return memory;
+error:
+	return NULL;
+}

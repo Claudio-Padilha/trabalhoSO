@@ -1,18 +1,23 @@
 #ifndef  MEMORIA_H
 #define  MEMORIA_H
 
-    #include <pthread.h>
+#include <pthread.h>
+#include "process.h"
 
-    // structure representing memory
-    typedef struct memory
-    {
-        process * buffer;       // memory is represented by a list. This points to the first process of the list
-        int used;               // amount of memory used          
-        int size;               // total storage capacity
-    } memory;
+typedef struct memory
+{
+	// lock is the memory mutex.
+	pthread_mutex_t lock;
+ 	// memory is represented by a list. This points to the first process of the list.
+	process * buffer;      
+	// amount of memory used.
+	int used;
+	// size of buffer.
+	int size;
+} memory;
 
-    // mutex for memory
-    pthread_mutex_t memoryLock = PTHREAD_MUTEX_INITIALIZER;
-
+// newMemory creates and initilize a memory struct
+// with buffer length of size.
+memory *newMemory(int size);
 
 #endif
