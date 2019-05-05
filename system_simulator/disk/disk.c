@@ -8,3 +8,19 @@ disk * newDisk()
 
     return d;
 }
+
+process * p getFromDisk (int pid, disk * d)
+{
+    process * p = d->list;                                                      // gets first element of the list
+
+    while (p != NULL && pid != p->id)
+    {
+        p = p->next;
+    }
+    if (p == NULL)
+    {
+        printf("ERROR! Process Loss")                                           // process not in disk
+    }
+
+    return p;
+}

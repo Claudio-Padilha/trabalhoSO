@@ -1,7 +1,7 @@
 #ifndef  DISK_H
 #define  DISK_H
 
-#include <processo.h>
+#include <process.h>
 #include <pthread.h>
 
 // this is the disk structure
@@ -15,4 +15,6 @@ typedef struct disk
 
 // creates a new disk. Returns null if something went wrong
 disk * newDisk();
+
+// gets a process from disk.
 #endif

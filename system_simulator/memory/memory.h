@@ -1,8 +1,8 @@
-#ifndef  MEMORIA_H
-#define  MEMORIA_H
+#ifndef  MEMORY_H
+#define  MEMORY_H
 
 	#include <pthread.h>
-	#include <processo.h>
+	#include <process.h>
 
 	typedef struct memory
 	{
@@ -14,7 +14,7 @@
 		int size;
 		// memory mutex
 		pthread_mutex_t lock;
-	} memory;
+	}memory;
 
 	// creates a new memory. Returns null if something went wrong
 	memory * newMemory ();

@@ -1,7 +1,7 @@
-#ifndef  FILA_H
-#define  FILA_H
+#ifndef  QUEUE_H
+#define  QUEUE_H
 
-    #include <processo.h>
+    #include <process.h>
     #include <pthread.h>
 
     // Lists representing entry queue and ready queue

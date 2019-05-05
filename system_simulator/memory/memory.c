@@ -1,17 +1,14 @@
-#include <memoria.h>
-
-
+#include <memory.h>
 memory * newMemory ()
 {
     memory * m = (memory *) malloc(sizeof(memory));
     m->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
 
     return m;
-}
+} 
 
-void * processIntoMemory (process * p, memory * mem)
-{
-    pthread_mutex_lock(&mem->lock);                                     // aquire memory lock           
+int processIntoMemory (process * p, memory * mem)
+{ 
         process * aux = mem->list;                                      // gets first process on the list
         if (aux == NULL || aux->id > p->id)                             // it goes on the first position
         {
@@ -23,9 +20,10 @@ void * processIntoMemory (process * p, memory * mem)
             {
                 aux = aux->next;
             }
-
             p->next = aux->next;
             aux->next = p;
         }
-    pthread_mutex_unlock(&mem->lock);                                     // releases memory lock
+    return p->id;   
 }
+
+system_simulator/memory/memory.h

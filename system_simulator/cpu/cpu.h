@@ -2,8 +2,8 @@
 #define  CPU_H
 
     #include <pthread.h>
-    #include <memoria.h>
-    #include <processo.h>
+    #include <memory.h>
+    #include <process.h>
 
     typedef struct cpu
     {
@@ -12,5 +12,5 @@
     }cpu;
 
     // Gives the process its share of cpu usage
-    void * workOnProcess (cpu * c, process * p, memory * mem);
+    int workOnProcess (cpu * c, process * p, memory * mem);
 #endif
