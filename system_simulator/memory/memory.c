@@ -7,7 +7,7 @@ memory * newMemory ()
     return m;
 } 
 
-int processIntoMemory (process * p, memory * mem)
+int processIntoMemory (process * p, memory * mem)       //  **** CAN I ORDER MEMORY? SWAPPER HAS TO REMOVE PROCESS FROM "INITIAL" PART OF THE MEMORY (FIFO?)
 { 
         process * aux = mem->list;                                      // gets first process on the list
         if (aux == NULL || aux->id > p->id)                             // it goes on the first position
@@ -22,8 +22,7 @@ int processIntoMemory (process * p, memory * mem)
             }
             p->next = aux->next;
             aux->next = p;
+            mem->used += p->size;
         }
     return p->id;   
 }
-
-system_simulator/memory/memory.h

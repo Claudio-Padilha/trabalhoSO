@@ -4,7 +4,7 @@
 	#include <pthread.h>
 	#include <process.h>
 
-	typedef struct memory
+	typedef struct memory        // SHOULD IT BE A CIRCULAR LIST?
 	{
 		// memory is represented by a list. This points to the first process of the list. Each process points to the next. It is ordered by pid.
 		process * list;      

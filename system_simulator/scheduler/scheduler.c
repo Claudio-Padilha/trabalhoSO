@@ -1,4 +1,4 @@
-#include <escalonador.h>
+#include <scheduler.h>
 #include <fila.h>
 #include <memoria.h>
 

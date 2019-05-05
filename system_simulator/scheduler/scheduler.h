@@ -1,5 +1,5 @@
-#ifndef  ESCALONADOR_H
-#define  ESCALONADOR_H
+#ifndef  SCHEDULER_H
+#define  SCHEDULER_H
 
 #include <memoria.h>
 #include <fila.h>
