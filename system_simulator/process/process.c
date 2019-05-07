@@ -7,6 +7,7 @@ process * newProcess (int id, int size, int arrival, int burst)
     p-size = size;
     p->arrivalTime = arrival;
     p->burstTime = burst;
+    p->memPosition = -1;
 
     return p;
 }
