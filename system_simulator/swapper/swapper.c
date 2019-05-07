@@ -1,6 +1,6 @@
 #include <swapper.h>
 
-int processIntoMemory (process * p, memory * mem, disk * d)       
+int processIntoMemory (process * p, disk * d, memory * mem)       
 { 
     if (mem->list == NULL)                                             // Memory is empty.
     {
@@ -70,7 +70,7 @@ void * swapp (int pid, disk * d, memory * mem)
     pthread_mutex_lock(&mem->lock);                                     // aquire memory lock
         process * p = getFromDisk(pid, d)                               // gets a process from disk
 
-        processIntoMemory(p, mem, d)                                    // puts the process into memory
+        processIntoMemory(p, d, mem)                                    // puts the process into memory
             
     pthread_mutex_unlock(&mem->lock);                                   // releases memory lock
     pthread_mutex_unlock(&d->lock);                                     // releases disk lock
