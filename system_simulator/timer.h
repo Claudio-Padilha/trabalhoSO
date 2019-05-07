@@ -1,1 +1,6 @@
-// couldn't really think about this
+#ifndef TIMER_H
+#define TIMER_H
+
+    #include <unistd.h>
+
+#endif

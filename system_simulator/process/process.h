@@ -1,6 +1,9 @@
 #ifndef  PROCESS_H
 #define  PROCESS_H
 
+    #include <stdio.lib>
+    #include <pthread.h>
+
     typedef struct process 
     {
         int id;         

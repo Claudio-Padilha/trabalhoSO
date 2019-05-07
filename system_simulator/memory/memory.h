@@ -2,7 +2,6 @@
 #define  MEMORY_H
 
 	#include <pthread.h>
-	#include <process.h>
 	#include <stdlib.h>
 
 	typedef struct memory      

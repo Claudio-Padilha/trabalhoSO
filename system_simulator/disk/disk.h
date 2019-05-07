@@ -1,8 +1,8 @@
 #ifndef  DISK_H
 #define  DISK_H
 
-    #include <process.h>
     #include <pthread.h>
+    #include <stdlib.h>
 
     // this is the disk structure
     typedef struct disk
@@ -15,11 +15,5 @@
 
     // creates a new disk. Returns null if something went wrong
     disk * newDisk();
-
-    // gets a process from disk.
-    process * p getFromDisk (int pid, disk * d);
-
-     // puts process into disk. Keeps the disk ordered
-    int processIntoDisk (process * p, disk * d);
 
 #endif
