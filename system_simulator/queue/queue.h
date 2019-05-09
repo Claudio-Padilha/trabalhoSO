@@ -14,6 +14,7 @@
         pthread_mutex_t lock;  
     } entryQueue;
 
+    //ready queue
      typedef struct queue    
     {
         process * first;

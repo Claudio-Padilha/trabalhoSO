@@ -9,8 +9,14 @@
     typedef struct timer
     {
         int timeQuantum;            // slice of max time of cpu usage per acess
-        int currentTime;           // total elapsed time
+        int currentTime;            // total elapsed time
+        
+        pthread_mutex_t lock;
     }timer;
 
+    // creates a new timer
     timer * newTimer(int tq);
+
+    // resets the timer and wait until cpu is done working on process p 
+    void * resetTimer (process * p, timer * t)
 #endif
