@@ -3,6 +3,7 @@
 
     #include <process.h>
     #include <pthread.h>
+    #include <stdlib.h>
 
     // Lists representing entry queue and ready queue
     // entry queue

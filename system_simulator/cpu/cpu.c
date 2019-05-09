@@ -1,8 +1,15 @@
 #include <cpu.h>
 
-
-
-int workOnProcess (cpu * c, process * p, memory * mem)
+int workOnProcess (process * p, int tq)
 {
-        p->burstTime -= c->timeQuantum;
+        int ret = tq;
+        if (p->burstTime < tq)
+        {
+                p->burstTime -= tq;
+        }else
+        {
+                ret = p->burstTime;
+                p->burstTime = 0;
+        }    
+        return ret; 
 }

@@ -7,7 +7,7 @@ void * startCreator (process * ps, entryQueue * entry, int n)                   
     sleep(ps->arrivalTime);
     pthread_mutex_lock(&entry->lock);
         prev = ps;
-        insert(ps, entry);
+        insertIntoQueue(ps, entry);
         ps = ps->next;
     pthread_mutex_unlock(&entry->lock);
 
@@ -16,7 +16,7 @@ void * startCreator (process * ps, entryQueue * entry, int n)                   
         sleep(ps->arrivalTime - prev->arrivalTime);
         pthread_mutex_lock(&entry->lock);
             prev = ps;
-            insert(ps, entry);
+            insertIntoQueue(ps, entry);
             ps = ps->next;
         pthread_mutex_unlock(&entry->lock);
 
