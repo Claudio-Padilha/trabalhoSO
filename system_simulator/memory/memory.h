@@ -18,6 +18,9 @@
 
 	// creates a new memory. Returns null if something went wrong
 	memory * newMemory ();
+
+	// looks for a process in memory. Returns NULL if process not in memory. Doesn't remove the process from memory, just gets a pointer to the process.
+	process * lookForProcess (int pid, memory * m);
 	
 #endif
 	

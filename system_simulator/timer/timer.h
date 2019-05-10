@@ -5,6 +5,7 @@
     #include <cpu.h>
     #include <stdlib.h>
     #include <unistd.h>
+    #include <sys/types.h>
 
     typedef struct timer
     {

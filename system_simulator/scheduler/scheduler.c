@@ -1,6 +1,4 @@
 #include <scheduler.h>
-#include <fila.h>
-#include <memoria.h>
 
 void * schedulerFCFS (entryQueue * entry, readyQueue * ready, memory * mem) 
 {   
@@ -27,7 +25,23 @@ void * schedulerFCFS (entryQueue * entry, readyQueue * ready, memory * mem)
 }
 
 
-void * schedulerRR (process * p, memory * mem) 
+void * schedulerRR (readyQueue * ready, memory * mem, disk * d, timer * t) 
 {
-    // TODO
+    if (ready->last == NULL)                            // queue is empty
+    {
+        return NULL;
+    }
+
+    pit_t pid = fork();
+
+    if (pid == 0)                                       // child porcess;
+    {
+        process * p = removeFromQueue(ready);
+        shipp(p->id, mem,d ,t);
+    }
+    else                                                // parent process
+    {
+        wait();
+    }
+
 }
