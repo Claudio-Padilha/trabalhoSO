@@ -1,0 +1,65 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CPU_H	cpu/cpu.h	/^#define  CPU_H$/;"	d
+CREATOR_H	creator/creator.h	/^#define CREATOR_H$/;"	d
+DISK_H	disk/disk.h	/^#define  DISK_H$/;"	d
+MEMORY_H	memory/memory.h	/^#define  MEMORY_H$/;"	d
+PROCESS_H	process/process.h	/^#define  PROCESS_H$/;"	d
+QUEUE_H	queue/queue.h	/^#define  QUEUE_H$/;"	d
+SCHEDULER_H	scheduler/scheduler.h	/^#define  SCHEDULER_H$/;"	d
+SHIPPER_H	shipper/shipper.h	/^#define SHIPPER_H$/;"	d
+SWAPPER_H	swapper/swapper.h	/^#define SWAPPER_H$/;"	d
+TIMER_H	timer/timer.h	/^#define TIMER_H$/;"	d
+arrivalTime	process/process.h	/^        int arrivalTime;         \/\/ moment a process enters entry queue$/;"	m	struct:process
+burstTime	process/process.h	/^        int burstTime;           \/\/ CPU burst time$/;"	m	struct:process
+currentTime	timer/timer.h	/^        int currentTime;            \/\/ total elapsed time$/;"	m	struct:timer
+disk	disk/disk.h	/^    typedef struct disk$/;"	s
+disk	disk/disk.h	/^    } disk;$/;"	t	typeref:struct:disk
+entryQueue	queue/queue.h	/^    } entryQueue;$/;"	t	typeref:struct:queue
+first	queue/queue.h	/^        process * first;$/;"	m	struct:queue
+getFromDisk	swapper/swapper.c	/^process * p getFromDisk (int pid, disk * d)$/;"	f
+id	process/process.h	/^        int id;         $/;"	m	struct:process
+insertIntoQueue	queue/queue.c	/^int insertIntoQueue (process * p, struct queue * q)$/;"	f
+last	queue/queue.h	/^        process * last;  $/;"	m	struct:queue
+list	disk/disk.h	/^        process * list;$/;"	m	struct:disk
+list	memory/memory.h	/^		process * list;      $/;"	m	struct:memory
+lock	disk/disk.h	/^        pthread_mutex_t lock; $/;"	m	struct:disk
+lock	memory/memory.h	/^		pthread_mutex_t lock;$/;"	m	struct:memory
+lock	queue/queue.h	/^        pthread_mutex_t lock;  $/;"	m	struct:queue
+lock	timer/timer.h	/^        pthread_mutex_t lock;$/;"	m	struct:timer
+lookForProcess	memory/memory.c	/^process * lookForProcess (int pid, memory * m)$/;"	f
+memPosition	process/process.h	/^        int memPosition;         \/\/ this is the initial adress of the process in memory. -1 when process not in memory $/;"	m	struct:process
+memory	memory/memory.h	/^	typedef struct memory      $/;"	s
+memory	memory/memory.h	/^	}memory;$/;"	t	typeref:struct:memory
+newDisk	disk/disk.c	/^disk * newDisk(process * ps)$/;"	f
+newEntryQueue	queue/queue.c	/^newEntryQueue()$/;"	f
+newMemory	memory/memory.c	/^memory * newMemory ()$/;"	f
+newProcess	process/process.c	/^process * newProcess (int id, int size, int arrival, int burst)$/;"	f
+newReadyQueue	queue/queue.c	/^newReadyQueue()$/;"	f
+newTimer	timer/timer.c	/^timer * newTimer(int tq)$/;"	f
+next	process/process.h	/^        struct process * next;  \/\/ when in memory or queue points to the next process$/;"	m	struct:process	typeref:struct:process::process
+process	process/process.h	/^    typedef struct process $/;"	s
+process	process/process.h	/^    } process;$/;"	t	typeref:struct:process
+queue	queue/queue.h	/^     typedef struct queue    $/;"	s
+queue	queue/queue.h	/^    typedef struct queue    $/;"	s
+readyQueue	queue/queue.h	/^    } readyQueue;$/;"	t	typeref:struct:queue
+removeFromQueue	queue/queue.c	/^process * removeFromQueue (struct queue * q)$/;"	f
+resetTimer	timer/timer.c	/^void * resetTimer (process * p, timer * t)$/;"	f
+schedulerFCFS	scheduler/scheduler.c	/^void * schedulerFCFS (entryQueue * entry, readyQueue * ready, memory * mem) $/;"	f
+schedulerRR	scheduler/scheduler.c	/^void * schedulerRR (readyQueue * ready, memory * mem, disk * d, timer * t) $/;"	f
+shipp	shipper/shipper.c	/^void * shipp (int pid, memory * mem, disk * d, timer * t)$/;"	f
+size	memory/memory.h	/^		int size;$/;"	m	struct:memory
+size	process/process.h	/^        int size;$/;"	m	struct:process
+startCreator	creator/creator.c	/^void * startCreator (process * ps, entryQueue * entry, int n, timer * t)                          \/\/ ps is a ordered list of all the processes. comes from disk.$/;"	f
+swapp	swapper/swapper.c	/^void * swapp (int pid, disk * d, memory * mem)$/;"	f
+swapperIntoDisk	swapper/swapper.c	/^int swapperIntoDisk (process * p, disk * d)                                 $/;"	f
+swapperIntoMemory	swapper/swapper.c	/^int swapperIntoMemory (process * p, disk * d, memory * mem)       $/;"	f
+timeQuantum	timer/timer.h	/^        int timeQuantum;            \/\/ slice of max time of cpu usage per acess$/;"	m	struct:timer
+timer	timer/timer.h	/^    typedef struct timer$/;"	s
+timer	timer/timer.h	/^    }timer;$/;"	t	typeref:struct:timer
+used	memory/memory.h	/^		int used;$/;"	m	struct:memory
+workOnProcess	cpu/cpu.c	/^int workOnProcess (process * p, int tq)$/;"	f

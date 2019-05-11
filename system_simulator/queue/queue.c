@@ -1,53 +1,85 @@
-#include <queue.h>
+#include "queue.h"
 
-newEntryQueue()
-{
-    entryQueue * entry = (entryQueue *) malloc(sizeof(entryQueue));
-    entry->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
-
-    return entry;
+Queue *queueNew(){
+	// Use calloc to malloc and zero all fields.
+	Queue *q = calloc(1, sizeof(Queue));
+	if (q == NULL) return NULL;
+	
+	pthread_mutex_init(&q->lock, NULL);
+    return q;
 }
 
-newReadyQueue()
-{
-    readyQueue * ready = (readyQueue *) malloc(sizeof(readyQueue));
-    ready->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+// Remove the first of queue.
+process *queuePop(Queue * q) {
+	if (q->first == NULL) return NULL;
 
-    return ready;
+	Queue *node = q->first;
+	process *p = node->value;
+
+	if (node == q->last) {
+		q->first = NULL;
+		q->last = NULL;
+	} else {
+		q->first = node->next;
+	}
+
+	free(node);
+	q->count--;	
+
+	return p;
 }
 
-process * removeFromQueue (struct queue * q)
-{
-    if (q->first != NULL)
-    {
-        process * ret = q->first;            // gets first process and adjust the queue
-        q->first = ret->next;
-
-        if (q->first == NULL)                // no more processes in queue
-        {
-            q->last = NULL;
-        }
-
-        return ret;
-    }
-
-    return NULL;                            // queue was empty
+process *queueSecurePop(Queue *q) {
+	pthread_mutex_lock(&q->lock);
+	process *p = queuePop(q)	
+	pthread_mutex_unlock(&q->lock);
+	return p;
 }
 
-int insertIntoQueue (process * p, struct queue * q)
-{
-    if (q->last == NULL)
-    {                                       // no process in queue, so p is the first
-        q->first = p;
-    }else if (q->first == q->last)
-    {                                       // p will be next to first if there is only one elem in queue
-        q->first->next = p;
-    }else
-    {
-        q->last->next = p;                   
-    }
-    q->last = p;                             // puts p in the end of the queue
-    p->next = NULL;
+// Return the first process of queue 
+// without remove node.
+process *queuePeek(Queue * q) {
+	if (q->first == NULL) return NULL;
+	process *p = q->first->value;
+	return p;
+}
+	
+process *queueSecurePeek(Queue * q) {
+	pthread_mutex_lock(&q->lock);
+	process *p = queuePeek(q);
+	pthread_mutex_unlock(&q->lock);
+	return p;
+}
 
-    return p->id;                           
+// Insert at the last position of queue.
+int queuePush(Queue *q, process *p) {
+	QueueNode *node = calloc(1, sizeof(QueueNode));
+	if (node == NULL) return -1;
+
+	node->value = p;
+
+	if (q->first == NULL && q->last == NULL) {
+		q->first = node;
+		q->last = node;
+	} else {
+		q->last->next = node;
+		q->last = node;
+	}
+
+	q->count++;
+	return p->id;
+}
+
+int queueSecurePush(Queue *q, process *p) {
+	pthread_mutex_lock(&q->lock);
+	int pid = queuePush(q, p);
+	pthread_mutex_unlock(&q->lock);
+	return pid;
+}
+
+int queueSecureCount(Queue *q) {
+	pthread_mutex_lock(&q->lock);
+	int count = q->count;
+	pthread_mutex_unlock(&q->lock);
+	return count;
 }
