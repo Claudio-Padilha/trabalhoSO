@@ -35,9 +35,11 @@ void * schedulerRR (readyQueue * ready, memory * mem, disk * d, timer * t)
     pit_t pid = fork();
 
     if (pid == 0)                                       // child porcess;
-    {
-        process * p = removeFromQueue(ready);
-        shipp(p->id, mem,d ,t);
+    {   
+        pthread_mutex_lock(&ready->lock);
+            process * p = removeFromQueue(ready);
+        pthread_mutex_unlock(&ready->lock);
+        shipp(p->id, mem,d ,t);                         // ship aquires all the locks it needs
     }
     else                                                // parent process
     {
