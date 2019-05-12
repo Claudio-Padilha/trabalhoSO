@@ -1,7 +1,7 @@
 #ifndef  QUEUE_H
 #define  QUEUE_H
 
-    #include <process.h>
+    #include "../process/process.h"
     #include <pthread.h>
     #include <stdlib.h>
 

@@ -1,16 +1,31 @@
 #ifndef  SCHEDULER_H
 #define  SCHEDULER_H
 
-#include <memory.h>
-#include <queue.h>
-#include <disk.h>
-#include <time.h>
+    #include <time.h>
+    #include "../memory/memory.h"
+    #include "../queue/queue.h"
+    #include "../disk/disk.h"
+
+    typedef struct fcfsArgs 
+    {
+        entryQueue * entry;
+        readyQueue * ready;
+        memory * mem;
+    } fcfsArgs;
+
+    ypedef struct rrArgs 
+    {
+        readyQueue * ready;
+        memory * mem;
+        disk * d;
+        timer * t;
+    } rrArgs;
 
     // schedulerFCFS : FIFO politics
     // moves processes from entry queue to ready queue
-    void * schedulerFCFS (entryQueue * entry, readyQueue * ready, memory * mem); 
+    void * schedulerFCFS (void * param); 
 
     // schedulerRR : Round Robin algorithm
     // moves processes from ready queue to dispatcher
-    void * schedulerRR (readyQueue * ready, memory * mem, disk * d, timer * t);
+    void * schedulerRR (void * param);
 #endif

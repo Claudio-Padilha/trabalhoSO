@@ -1,4 +1,4 @@
-#include <swapper.h>
+#include "swapper.h"
 
 process * p getFromDisk (int pid, disk * d)
 {
@@ -132,15 +132,15 @@ int swapperIntoMemory (process * p, disk * d, memory * mem)
     return -1;                                                              // unknow error                                                         
 }
 
-void * swapp (int pid, disk * d, memory * mem)
+void * swapper (void * param)
 {
-   
-    pthread_mutex_lock(&d->lock);                                       // aquire disk lock
-    pthread_mutex_lock(&mem->lock);                                     // aquire memory lock
-        process * p = getFromDisk(pid, d)                               // gets a process from disk
-        processIntoMemory(p, d, mem)                                    // puts the process into memory    
-    pthread_mutex_unlock(&mem->lock);                                   // releases memory lock
-    pthread_mutex_unlock(&d->lock);                                     // releases disk lock
+    swappArgs * args = (swappArgs *) param;
+    pthread_mutex_lock(&args->d->lock);                                       // aquire disk lock
+    pthread_mutex_lock(&args->mem->lock);                                     // aquire memory lock
+        process * p = getFromDisk(args->pid, args->d)                               // gets a process from disk
+        processIntoMemory(p, args->d, args->mem)                                    // puts the process into memory    
+    pthread_mutex_unlock(&args->mem->lock);                                   // releases memory lock
+    pthread_mutex_unlock(&args->d->lock);                                     // releases disk lock
 
     return p;
 }

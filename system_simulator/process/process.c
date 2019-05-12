@@ -1,4 +1,4 @@
-#include <process.h>
+#include "process.h"
 
 process * newProcess (int id, int size, int arrival, int burst)
 {

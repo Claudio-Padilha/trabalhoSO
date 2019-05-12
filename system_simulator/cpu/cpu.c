@@ -1,4 +1,4 @@
-#include <cpu.h>
+#include "cpu.h"
 
 int workOnProcess (process * p, int tq)
 {

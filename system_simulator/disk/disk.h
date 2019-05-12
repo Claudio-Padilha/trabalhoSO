@@ -3,7 +3,7 @@
 
     #include <pthread.h>
     #include <stdlib.h>
-    #include <process.h>
+    #include "../process/process.h"
 
     // this is the disk structure
     typedef struct disk

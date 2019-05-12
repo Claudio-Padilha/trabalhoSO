@@ -1,20 +1,27 @@
-#include <shipper.h>
+#include "shipper.h"
 
-void * shipp (int pid, memory * mem, disk * d, timer * t)
+void * shipp (void * param)
 {
-    pthread_mutex_lock(&mem->lock);
-        process * p = lookForProcess(pid, mem);                                        // try to get process from memory
-    pthread_mutex_unlock(&mem->lock);
+    shipperArgs * args = (shipperArgs *) param;
+    pthread_mutex_lock(&args->mem->lock);
+        process * p = lookForProcess(args->pid, args->mem);                                        // try to get process from memory
+    pthread_mutex_unlock(&args->mem->lock);
     
     if (p == NULL)                                                                // process not in memory
     {
-        swapp(pid, d, mem);                                                       // swapps aquire all necessary locks and brings the process to memory
-        pthread_mutex_lock(&mem->lock);
-            p = lookForProcess(pid, mem);                                             // gets the  process from memory
-        pthread_mutex_unlock(&mem->lock);
+        swappArgs sw;
+        sw.d = args->d;
+        sw.mem = args->mem;
+        sw.pid = args->pid;
+
+        pthread_t swa;
+        pthread_create(&swa, NULL, swapper, (void *) &sw);                                         // swapps aquire all necessary locks and brings the process to memory
+        pthread_mutex_lock(&args->mem->lock);
+            p = lookForProcess(args->pid, args->mem);                                             // gets the  process from memory
+        pthread_mutex_unlock(&args->mem->lock);
     }
 
-    pthread_mutex_lock(&t->lock);
-        resetTimer(p, t);                                                        // execute the process and reset timer
-    pthread_mutex_unlock(&t->lock);
+    pthread_mutex_lock(&args->t->lock);
+        resetTimer(p, args->t);                                                        // execute the process and reset timer
+    pthread_mutex_unlock(&args->t->lock);
 }

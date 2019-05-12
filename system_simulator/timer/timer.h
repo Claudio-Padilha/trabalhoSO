@@ -1,11 +1,10 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-    #include <pthread.h>
-    #include <cpu.h>
     #include <stdlib.h>
     #include <unistd.h>
-    #include <sys/types.h>
+    #include <pthread.h>
+    #include "../cpu/cpu.h"
 
     typedef struct timer
     {
@@ -19,5 +18,5 @@
     timer * newTimer(int tq);
 
     // resets the timer and wait until cpu is done working on process p 
-    void * resetTimer (process * p, timer * t)
+    void * resetTimer (process * p, timer * t);
 #endif

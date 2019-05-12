@@ -3,10 +3,19 @@
 
     #include <unistd.h>
     #include <pthread.h>
-    #include <queue.h>
     #include <time.h>
+    #include "../queue/queue.h"
+    #include "../process/process.h"
+
+    typedef struct creatorArgs
+    {
+        process * ps;                                        // ordered list of processes
+        entryQueue * entry;
+        int n;                                               // number of processes
+        timer * t;
+    } creatorArgs;
 
     // receives the list of processes oredered by arrival time (creation time)
-    void * startCreator (process * ps, entryQueue * entry, int n, timer * t);
+    void * startCreator (void * param);
 
 #endif

@@ -1,5 +1,4 @@
-#include <disk.h>
-#include <pthread.h>
+#include "disk.h"
 
 disk * newDisk(process * ps)
 {

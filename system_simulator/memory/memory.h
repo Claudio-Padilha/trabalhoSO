@@ -3,6 +3,7 @@
 
 	#include <pthread.h>
 	#include <stdlib.h>
+	#include "../process/process.h"
 
 	typedef struct memory      
 	{
