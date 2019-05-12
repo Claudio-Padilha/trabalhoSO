@@ -1,6 +1,6 @@
 #include "shipper.h"
 
-void * shipp (void * param)
+void * shipper (void * param)
 {
     shipperArgs * args = (shipperArgs *) param;
     pthread_mutex_lock(&args->mem->lock);
@@ -15,7 +15,7 @@ void * shipp (void * param)
         sw.pid = args->pid;
 
         pthread_t swa;
-        pthread_create(&swa, NULL, swapper, (void *) &sw);                                         // swapps aquire all necessary locks and brings the process to memory
+        pthread_create(&swa, NULL, swapper, (void *) &sw);                                         // swapper aquire all necessary locks and brings the process to memory
         pthread_mutex_lock(&args->mem->lock);
             p = lookForProcess(args->pid, args->mem);                                             // gets the  process from memory
         pthread_mutex_unlock(&args->mem->lock);
