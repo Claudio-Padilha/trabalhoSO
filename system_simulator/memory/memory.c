@@ -10,14 +10,14 @@ memory * newMemory ()
 
 int isInMemory (int pid, memory * m)
 {
-    process * aux = memory->list;
+    process * aux = m->list;
 
     while (aux != NULL && aux->id != pid)                   // Looks for process              
     {
         aux = aux->next;
     }
 
-    if (ret == NULL)                                        // Process not in memory
+    if (aux == NULL)                                        // Process not in memory
     {
         return 0;                                           
     }
@@ -28,7 +28,7 @@ int isInMemory (int pid, memory * m)
 process * getFromMemory (memory * m) 
 {
     process * ret = NULL;
-    if (memory->list != NULL)
+    if (m->list != NULL)
     {
         ret = m->list;                              // gets process from memory
         m->list = m->list->next;                    // removes process reference from memory
@@ -39,7 +39,7 @@ process * getFromMemory (memory * m)
     return ret;     
 }
 
-int InsertIntoMemory (process * p, memory * mem, disk * d)                
+int insertIntoMemory (process * p, memory * mem, disk * d)                
 { 
     if (mem->list == NULL)                                             // Memory is empty.
     {
