@@ -1,29 +1,25 @@
 #include "queue.h"
 
-newEntryQueue()
+newQueue()
 {
-    entryQueue * entry = (entryQueue *) malloc(sizeof(entryQueue));
-    entry->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+    queue * q = (queue *) malloc(sizeof(queue));
+    q->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+    q->first = NULL;
+    q->last = NULL;
 
     return entry;
 }
 
-newReadyQueue()
-{
-    readyQueue * ready = (readyQueue *) malloc(sizeof(readyQueue));
-    ready->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
-
-    return ready;
-}
-
-process * removeFromQueue (struct queue * q)
+int removeFromQueue (queue * q)
 {
     if (q->first != NULL)
     {
-        process * ret = q->first;            // gets first process and adjust the queue
-        q->first = ret->next;
+        int ret = q->first->pid;                                // Gets first process pid and adjust the queue
+        node * aux = q->first;
+        q->first = q->first->next;
+        free(aux);
 
-        if (q->first == NULL)                // no more processes in queue
+        if (q->first == NULL)                                   // No more processes in queue
         {
             q->last = NULL;
         }
@@ -31,23 +27,32 @@ process * removeFromQueue (struct queue * q)
         return ret;
     }
 
-    return NULL;                            // queue was empty
+    return -1;                                                  // Queue was empty
 }
 
-int insertIntoQueue (process * p, struct queue * q)
+int insertIntoQueue (int pid, int burst, queue * q)
 {
+    node * n = (node *) malloc(sizeof(node));
+    if (n == NULL)
+    {
+        return -1;                                            // Couldn't alocate node
+    }
+    n->pid = pid;
+    n->burstLeft = burst;
     if (q->last == NULL)
-    {                                       // no process in queue, so p is the first
-        q->first = p;
-    }else if (q->first == q->last)
-    {                                       // p will be next to first if there is only one elem in queue
-        q->first->next = p;
+    {     
+        q->first = n;                                         // No process in queue, so p is the first
+        q->last = n;
+    }
+    else if (q->first == q->last)
+    {                                                        // Process will be next to first if there is only one elem in queue
+        q->first->next = n;
     }else
     {
-        q->last->next = p;                   
+        q->last->next = n;                                  // Process will be next to last
     }
-    q->last = p;                             // puts p in the end of the queue
-    p->next = NULL;
+    q->last = n;                                            // Puts p in the end of the queue
+    n->next = NULL;
 
-    return p->id;                           
+    return n->pid;                           
 }

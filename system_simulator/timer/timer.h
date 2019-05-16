@@ -14,9 +14,15 @@
         pthread_mutex_t lock;
     }timer;
 
+    typedef struct timerArgs 
+    {
+        process * p;
+        timer * t;
+    }timerArgs;
+
     // creates a new timer
     timer * newTimer(int tq);
 
     // resets the timer and wait until cpu is done working on process p 
-    void * resetTimer (process * p, timer * t);
+    void * resetTimer (void * param);
 #endif

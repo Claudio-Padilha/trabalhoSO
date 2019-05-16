@@ -8,14 +8,14 @@
 
     typedef struct fcfsArgs 
     {
-        entryQueue * entry;
-        readyQueue * ready;
+        queue * entry;
+        queue * ready;
         memory * mem;
     } fcfsArgs;
 
-    ypedef struct rrArgs 
+    typedef struct rrArgs 
     {
-        readyQueue * ready;
+        queue * ready;
         memory * mem;
         disk * d;
         timer * t;

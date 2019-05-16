@@ -4,24 +4,25 @@ void * shipper (void * param)
 {
     shipperArgs * args = (shipperArgs *) param;
     pthread_mutex_lock(&args->mem->lock);
-        process * p = lookForProcess(args->pid, args->mem);                                        // try to get process from memory
+        process * p = lookForProcess(args->pid, args->mem);                     // try to get process from memory
     pthread_mutex_unlock(&args->mem->lock);
     
-    if (p == NULL)                                                                // process not in memory
+    if (p == NULL)                                                              // process not in memory
     {
         swappArgs sw;
-        sw.d = args->d;
+        sw.d = args->d;                                                         // aquire arguments for swapper in a structure
         sw.mem = args->mem;
         sw.pid = args->pid;
 
         pthread_t swa;
-        pthread_create(&swa, NULL, swapper, (void *) &sw);                                         // swapper aquire all necessary locks and brings the process to memory
+        pthread_create(&swa, NULL, swapper, (void *) &sw);                      // call swapper as a thread
+        pthread_join(swa, NULL);
         pthread_mutex_lock(&args->mem->lock);
-            p = lookForProcess(args->pid, args->mem);                                             // gets the  process from memory
+            p = lookForProcess(args->pid, args->mem);                           // gets the  process from memory
         pthread_mutex_unlock(&args->mem->lock);
     }
 
     pthread_mutex_lock(&args->t->lock);
-        resetTimer(p, args->t);                                                        // execute the process and reset timer
+        resetTimer(p, args->t);                                                 // execute the process and reset timer
     pthread_mutex_unlock(&args->t->lock);
 }

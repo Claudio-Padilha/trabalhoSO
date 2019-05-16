@@ -11,10 +11,14 @@ timer * newTimer(int tq)
     return t;   
 }
 
-void * resetTimer (process * p, timer * t)
+void * resetTimer (timerArgs * args)
 {
-    unsigned int useTime = workOnProcess(p, t->timeQuantum);                  // updates process burst time and return the elapsed time
+    unsigned int useTime = workOnProcess(args->p, args->t->timeQuantum);                  // updates process burst time and return the elapsed time
 
     sleep(useTime);
     t->currentTime += useTime;
+    if (args->p->burstTime == 0) 
+    {
+        
+    }
 }

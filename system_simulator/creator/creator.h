@@ -10,9 +10,8 @@
     typedef struct creatorArgs
     {
         process * ps;                                        // ordered list of processes
-        entryQueue * entry;
+        queue * entry;
         int n;                                               // number of processes
-        timer * t;
     } creatorArgs;
 
     // receives the list of processes oredered by arrival time (creation time)

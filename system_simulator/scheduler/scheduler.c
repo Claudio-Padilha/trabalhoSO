@@ -21,7 +21,8 @@ void * schedulerFCFS (void * param)
             pthread_mutex_unlock(&args->ready->lock);
 
             printf("Escalonador FCFS de longo prazo retirou o processo %d da fila de entrada, colocando-o na fila de prontos", p->id);
-        }else 
+        }
+        else 
         {
             printf("Escalonador FCFS de longo prazo não retirou o processo %d da fila de entrada porque não há espaço na memória", entry->first->id);
         }

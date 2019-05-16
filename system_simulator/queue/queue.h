@@ -5,33 +5,29 @@
     #include <pthread.h>
     #include <stdlib.h>
 
+    // Queue node structure
+     typedef struct node    
+    {
+        int pid; 
+        int burstLeft; 
+        struct node * next;
+    } node;
+
     // Lists representing entry queue and ready queue
-    // entry queue
     typedef struct queue    
     {
-        process * first;
-        process * last;  
+        node * first;
+        node * last;  
         pthread_mutex_t lock;  
-    } entryQueue;
+    } queue;
 
-    //ready queue
-     typedef struct queue    
-    {
-        process * first;
-        process * last;  
-        pthread_mutex_t lock;  
-    } readyQueue;
+     // Creates new queue
+    newQueue();
 
-     // creates new entry queue
-    newEntryQueue();
+    // Receives a queue, remove the first process from it and return the removed process pid. Returns -1 if process not in queue.
+    int removeFromQueue (queue * q);
 
-    // creates new ready queue
-    newReadyQueue();
-
-    // receives a queue, remove the first process from it and return the removed process
-    process * removeFirst (struct queue * q);
-
-    // receives a process  and a queue and inserts the process into the end of the queue. Returns pid
-    int insert (process * p, struct queue * q);
+    // Receives a process pid and a queue and inserts the process into the end of the queue. Returns pid or -1 if it couldn't insert.
+    int insertIntoQueue (int pid, int burst,queue * q);
 
 #endif

@@ -1,28 +1,24 @@
 #include "creator.h"
 
-void * startCreator (void * param)                          // ps is a ordered list of all the processes. comes from disk.
+void * startCreator (void * param)                                          // Receives an ordered list of all the processes.
 {
     creatorArgs * args = (creatorArgs *) param;
-    process * prev;
+    int prevArrival;                                                        // Previous arrival time
     sleep(args->ps->arrivalTime);
 
-    pthread_mutex_lock(&args->t->lock);
-        args->t->currentTime += args->ps->arrivalTime;                                  // update current time
-    pthread_mutex_unlock(&t->lock);
-
     pthread_mutex_lock(&args->entry->lock);
-        prev = args->ps;
-        insertIntoQueue(args->ps, entry);
-        args->ps = args->ps->next;
-    pthread_mutex_unlock(&entry->lock);
+        prevArrival = args->ps->arrivalTime;
+        insertIntoQueue(args->ps->id, args->ps->burstTime, entry);          
+        args->ps = args->ps->next;                                          // Removes Process reference from creator
+    pthread_mutex_unlock(&args->entry->lock);
 
-    for (int i = 1; i<n; i++)
+    for (int i = 1; i<n; i++)                                               // Goes through all processes and creates them at instant "arrivalTime"
     {
-        sleep(ps->arrivalTime - prev->arrivalTime);                         // wait until next moment it has to create another process
+        sleep(ps->arrivalTime - prevArrival);                               // Wait until next moment it has to create another process
         
         pthread_mutex_lock(&args->entry->lock);
-            prev = args->ps;
-            insertIntoQueue(args->ps, args->entry);
+            prevArrival = args->ps->arrivalTime;
+            insertIntoQueue(args->ps->id, args->ps->burstTime, entry);
             arg->ps = args->ps->next;
         pthread_mutex_unlock(&args->entry->lock);
 

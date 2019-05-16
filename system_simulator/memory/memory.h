@@ -3,6 +3,7 @@
 
 	#include <pthread.h>
 	#include <stdlib.h>
+	#include "../disk/disk.h"
 	#include "../process/process.h"
 
 	typedef struct memory      
@@ -20,8 +21,14 @@
 	// creates a new memory. Returns null if something went wrong
 	memory * newMemory ();
 
-	// looks for a process in memory. Returns NULL if process not in memory. Doesn't remove the process from memory, just gets a pointer to the process.
-	process * lookForProcess (int pid, memory * m);
+	// looks for a process in memory. Returns true (1) if process is in memory. Returns false (0) if process is not in memory
+	int isInMemory (int pid, memory * m);
+
+	// Removes a process from the initial part of the memory
+	process * getFromMemory (memory * m);
+
+	// Inserts a process into memory. Removes process(es) from memory and put into disk if necessary. Uses first fit
+	int InsertIntoMemory (process * p, memory * mem, disk * d);
 	
 #endif
-	
+					
