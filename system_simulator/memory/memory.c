@@ -11,6 +11,29 @@ memory * newMemory (int size)
     return m;
 }
 
+int getBiggestInterval (memory * mem) 
+{
+    process * aux = mem->list;
+    int biggest = 0;
+
+    while (aux->next != NULL)                                           // Verifies which interval (except the last one) is bigger than current biggest
+    {
+        if ((aux->next->memPosition - (aux->memPosition + aux->size)) > biggest)
+        {
+            biggest = aux->next->memPosition - (aux->memPosition + aux->size);
+        }
+
+        aux = aux->next;
+    }
+
+    if (((mem->size - 1) - (aux->memPosition + aux->size)) > biggest)    // Verifies if the last interval is bigger than current biggest
+    {
+        biggest = (mem->size - 1) - (aux->memPosition + aux->size);
+    }
+
+    return biggest;   
+}
+
 process * copyFromMemory (int pid, memory * m)
 {
      process * p = m->list;
@@ -100,26 +123,44 @@ int insertIntoMemory (process * p, memory * mem, disk * d)
     {
         if (mem->biggestInterval >= p->size)                                // there is space in memory
         {
+            int flag = 0;                                                   // control for biggestInterval adjustment (if necessary)
             while (aux->next != NULL)                                      // Looks for a space to fit the process p between processes
             {   
                 if (aux->next->memPosition - (aux->memPosition + aux->size) >= p->size)         // there is space between processes
                 {
+                    if ((aux->next->memPosition - (aux->memPosition + aux->size)) == mem->biggestInterval)  // It is necessary to adjust biggestInterval
+                    {
+                        flag = 1;
+                    }
+                    
                     p->next = aux->next;
                     aux->next = p;
-                    p->memPosition = aux->memPosition + 1;
+                    p->memPosition = aux->memPosition + aux->size;
 
-                     // TODO: adjust biggestInterval if necessary
+                     if (flag == 1)                                     // It is necessary to adjust biggest interval
+                     {
+                        mem->biggestInterval = getBiggestInterval (mem);
+                     }
 
                     return p->id;
                 }
+
+                aux = aux->next;
             }
 
             if (mem->size - 1 - (aux->memPosition + aux->size) >= p->size)    // There is space to put the process in the last position of the memory
             {
+                if (mem->size - 1 - (aux->memPosition + aux->size) == mem->biggestInterval) // Process insertion will affect biggestInterval size
+                {
+                    flag == 1;
+                }
                 aux->next = p;
-                p->memPosition = aux->memPosition + 1;
+                p->memPosition = aux->memPosition + aux->size;
 
-                // TODO: adjust biggestInterval if necessary
+                 if (flag == 1)                                             // It is necessary to adjust biggest interval
+                {
+                    mem->biggestInterval = getBiggestInterval (mem);
+                }
 
                 return p->id;
             }
@@ -128,15 +169,23 @@ int insertIntoMemory (process * p, memory * mem, disk * d)
 
         // It's necessary to move process(es) from memory to disk                                                            
         process * aux;
-        while (mem->list->memPosition < p->size)                      // Assumes a process is never to big for memory
+        while (mem->list->memPosition < p->size)                      // Assumes a process is never too big for memory
         {   
-            aux = firstFromMemory(mem);                                 // Removes process from memory
+            aux = firstFromMemory(mem);                                 // Removes first process from memory
             insertIntoDisk(aux, d);                                   // Insert process into disk
         }
 
         p->memPosition = 0;                                           // Insert process in the begining of the memory
         p->next = mem->list;                                          
-        mem->list = p;                                                
+        mem->list = p;    
+
+        if (mem->list->next == NULL)                                // Process is alone in memory
+        {
+            mem->biggestInterval == mem->size - mem->list->size;
+        } else if ((mem->list->next->memPosition - mem->list->size) > mem->biggestInterval)     // New biggest interval is necessary
+        {
+            mem->biggestInterval = (mem->list->next->memPosition - mem->list->size);
+        }                                   
 
         return p->id;
     }

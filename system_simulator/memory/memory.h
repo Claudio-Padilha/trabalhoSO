@@ -29,7 +29,7 @@
 	// Removes a process from the initial part of the memory
 	process * firstFromMemory (memory * m);
 
-	// Removes a process from memory and returns teh process. Returns Null if the process is not in memory
+	// Removes a process from memory and returns the process. Returns Null if the process is not in memory
 	process * getFromMemory (int pid, memory * m);
 
 	// Inserts a process into memory. Removes process(es) from memory and put into disk if necessary. Uses first fit
