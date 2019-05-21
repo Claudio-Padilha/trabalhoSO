@@ -5,12 +5,15 @@
     #include "../memory/memory.h"
     #include "../queue/queue.h"
     #include "../disk/disk.h"
+    #include "../timer/timer.h"
 
     typedef struct fcfsArgs 
     {
         queue * entry;
         queue * ready;
         memory * mem;
+        disk * d;
+        timer * t;  
     } fcfsArgs;
 
     typedef struct rrArgs 

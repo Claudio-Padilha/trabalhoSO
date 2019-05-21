@@ -10,6 +10,7 @@
     {
         int pid; 
         int burstLeft; 
+        int size;
         struct node * next;
     } node;
 

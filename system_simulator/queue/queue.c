@@ -7,7 +7,7 @@ newQueue()
     q->first = NULL;
     q->last = NULL;
 
-    return entry;
+    return q;
 }
 
 int removeFromQueue (queue * q)
