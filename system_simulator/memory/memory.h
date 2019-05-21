@@ -23,6 +23,9 @@
 	// Creates a new memory. Returns null if something went wrong
 	memory * newMemory (int size);
 
+	// Gets the size of the biggest interval in memory and returns it
+	int getBiggestInterval (memory * mem);
+
 	// Gets a reference for a process tha is in memory. If returns null, process not in memory
 	process * copyFromMemory (int pid, memory * mem);
 
