@@ -102,7 +102,10 @@ process * firstFromMemory (memory * m)
         m->list = m->list->next;                    // removes process reference from memory
         ret->memPosition = -1;                      // updates process memory position (none)
         
-         // TODO: adjust biggestInterval if necessary
+        if (m->list->memPosition > m->biggestInterval)
+        {
+            m->biggestInterval = m->list->memPosition;
+        }
     }
     
     return ret;     
