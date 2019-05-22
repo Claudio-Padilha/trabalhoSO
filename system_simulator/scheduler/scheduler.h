@@ -7,6 +7,7 @@
     #include "../disk/disk.h"
     #include "../timer/timer.h"
     #include "../swapper/swapper.h"
+    #include "../shipper/shipper.h"
 
     typedef struct fcfsArgs 
     {

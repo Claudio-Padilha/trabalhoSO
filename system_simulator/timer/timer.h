@@ -12,7 +12,8 @@
         int currentTime;            // total elapsed time
         
         pthread_mutex_t lock;
-        pthread_cond_t cond;
+        pthread_cond_t condTq;      // Condition variable used to signal the end of time quantum
+        pthread_cond_t condBurst;   // Condition variable used to signal the end of a process burst time
     }timer;
 
     typedef struct timerArgs 

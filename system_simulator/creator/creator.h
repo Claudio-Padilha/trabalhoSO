@@ -13,7 +13,7 @@
         queue * entry;
     } creatorArgs;
 
-    // receives the list of processes oredered by arrival time (creation time)
+    // Receives a process and puts it in entry queue on the proper time
     void * creator (void * param);
 
 #endif

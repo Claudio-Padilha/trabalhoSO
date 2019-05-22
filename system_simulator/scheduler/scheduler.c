@@ -5,7 +5,7 @@ void * waitForTimer (void * param)
     fcfsArgs * args =  (fcfsArgs *) param;
     while (1)                                               
     {
-        pthread_cond_wait(&args->t->cond, &args->t->lock);      // Waits for timer signal
+        pthread_cond_wait(&args->t->condBurst, &args->t->lock);      // Waits for timer signal
         pthread_mutex_lock(&args->entry->lock);
         if (args->entry->first != NULL)                         // If entry queue is not empty, moves a process from entry queue to ready queue
         {
@@ -20,7 +20,7 @@ void * waitForTimer (void * param)
             pthread_mutex_unlock(&args->entry->lock);
 
             pthread_t swap;
-            pthread_create(&swapper, NULL, swapper, sargs);         // Calls swapper and put the process removed from entry queue in memory
+            pthread_create(&swap, NULL, swapper, (void *) sargs);         // Calls swapper and put the process removed from entry queue in memory
             int check = pthread_join(swap, NULL);
 
             if (check == 0)                                         // Join with swapper was successful
@@ -59,7 +59,7 @@ void * schedulerFCFS (void * param)
             swappArgs * sargs;
             sargs->d = args->d;
             sargs->mem = args->mem;
-            sargs->pid = args->entry->first;
+            sargs->pid = args->entry->first;                                        // Argumrnts for swapper
             int pid = args->entry->first->pid;
             int burst = args->entry->first->burst;
             int size = args->entry->first->size;
@@ -69,7 +69,7 @@ void * schedulerFCFS (void * param)
             
             
             pthread_t swap;
-            pthread_create(&swapper, NULL, swapper, sargs);         // Calls swapper and put the process removed from entry queue in memory
+            pthread_create(&swap, NULL, swapper, (void *) sargs);         // Calls swapper and put the process removed from entry queue in memory
             int check = pthread_join(swap, NULL);
 
             if (check == 0)                                         // Join with swapper was successful
@@ -87,6 +87,27 @@ void * schedulerFCFS (void * param)
 void * schedulerRR (void * param) 
 {
     rrArgs * args =  (rrArgs *) param;
+    while (1)
+    {
+        pthread_cond_wait(&args->t->condTq, &args->t->lock);      // Waits for timer signal
+        pthread_mutex_lock(&args->ready->lock);
+        if (args->ready->first == NULL)                           // Queue is empty. Do nothing
+        {
+            continue;
+        }
+        // Queue is not empty
+        shipperArgs * sargs;
+        sargs->d = args->d;
+        sargs->mem = args->mem;                                 // Argumrnts for shipper
+        sargs->pid = args->ready->first->pid;
+        sargs->t = args->t;
 
-    // TODO
+        pthread_mutex_lock(&args->ready->lock);
+        removeFromQueue(args->ready);                            // Removes process from ready queue
+        pthread_mutex_unlock(&args->ready->lock);
+
+        pthread_t ship;
+        pthread_create(&ship, NULL, shipper, (void *) sargs);   // Moves the process to shipper
+    }
+    
 }
