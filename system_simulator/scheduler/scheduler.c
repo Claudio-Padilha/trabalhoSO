@@ -80,14 +80,9 @@ void * schedulerFCFS (void * param)
             }else{
                 printf("Error with join between swapper and FCFS scheduler!");
             }
-
-            pthread_mutex_lock(&args->ready->lock);
-            insertIntoQueue(pid, burst, size, args->ready);
-            pthread_mutex_unlock(&args->ready->lock);   
         }
     }
 }
-
 
 void * schedulerRR (void * param) 
 {
