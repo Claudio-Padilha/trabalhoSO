@@ -5,6 +5,6 @@ void * creator (void * param)                                          // Receiv
     creatorArgs * args = (creatorArgs *) param;
     sleep(args->p->arrivalTime);
     pthread_mutex_lock(&args->entry->lock);
-        insertIntoQueue(args->p->id, args->p->burstTime, args->entry);
+        insertIntoQueue(args->p->id, args->p->burstTime, args->p->size, args->entry);
     pthread_mutex_unlock(&args->entry->lock);
 }

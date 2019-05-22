@@ -33,17 +33,21 @@ void * waitForTimer (void * param)
 void * schedulerFCFS (void * param) 
 { 
     fcfsArgs * args =  (fcfsArgs *) param; 
-    // TODO: CALL waitForTimer and verify "args"
-    while (1)                       
+    pthread_t waitTimer;
+
+    pthread_create(&waitTimer, NULL, waitForTimer, (void *) args);                  // Creates thread that will wait for timer signal. 
+                                                                                    // We do not join because we need the above will to run concurrently
+
+    while (1)                                                                       // This while will check if there is someone in entry line and space in memory      
     {
         pthread_mutex_lock(&args->entry->lock);
         pthread_mutex_lock(&args->mem->lock);
-        if (args->entry->first == NULL)
+        if (args->entry->first == NULL)                                             // Entry queue is empty
         {
             pthread_mutex_unlock(&args->entry->lock);
             pthreadmutex_unlock(&args->mem->lock);
             continue;
-        }else if (args->mem->biggestInterval >= args->entry->first->size)
+        }else if (args->mem->biggestInterval >= args->entry->first->size)           // queue is not empty and there is space in memory
         {
             swappArgs * sargs;
             sargs->d = args->d;
