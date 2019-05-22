@@ -15,12 +15,12 @@
     } disk;
 
     // creates a new disk. Returns null if something went wrong. It has to reiceive a ordered list of processes (by arrivalTime atribute)
-    disk * newDisk(process * ps);
+    disk * newDisk();
 
-    // Gets a process from disk and erases the reference on disk
-    process * getFromDisk (int pid, disk * d);
+    // "Copies" a process from disk (sends a reference to memory)
+    process * copyFromDisk (int pid, disk * d);
 
-    // Puts a process in the first position in disk
+    // Puts a process in the first position in disk and returns process pid. Once the process is in disk, it doesn't get out. 
     int insertIntoDisk (process * p, disk * d);
 
 #endif

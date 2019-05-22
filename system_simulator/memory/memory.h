@@ -8,10 +8,8 @@
 
 	typedef struct memory      
 	{
-		// Memory is represented by a list. This points to the first process of the list. Each process points to the next. It is ordered by pid.
+		// Memory is represented by a list. This points to the first process of the list. Each process points to the next
 		process * list;      
-		// Amount of memory used
-		int used;
 		// Biggest continuous part of memory
 		int biggestInterval;
 		// Memory size
@@ -26,10 +24,10 @@
 	// Gets the size of the biggest interval in memory and returns it
 	int getBiggestInterval (memory * mem);
 
-	// Gets a reference for a process tha is in memory. If returns null, process not in memory
+	// Gets a reference for a process that is in memory. If returns null, process not in memory
 	process * copyFromMemory (int pid, memory * mem);
 
-	// Removes a process from the initial part of the memory
+	// Removes a process from the initial part of the memory. Returns null if memory is empty
 	process * firstFromMemory (memory * m);
 
 	// Removes a process from memory and returns the process. Returns Null if the process is not in memory

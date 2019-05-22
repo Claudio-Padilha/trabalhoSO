@@ -6,6 +6,7 @@ timer * newTimer(int tq)
     t->timeQuantum = tq;
     t->currentTime = 0;
     t->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
+    t->cond = (pthread_cond_t) PTHREAD_COND_INITIALIZER;
 
     return t;   
 }

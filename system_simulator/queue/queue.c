@@ -30,7 +30,7 @@ int removeFromQueue (queue * q)
     return -1;                                                  // Queue was empty
 }
 
-int insertIntoQueue (int pid, int burst, queue * q)
+int insertIntoQueue (int pid, int burst, int size, queue * q)
 {
     node * n = (node *) malloc(sizeof(node));
     if (n == NULL)
@@ -38,7 +38,8 @@ int insertIntoQueue (int pid, int burst, queue * q)
         return -1;                                            // Couldn't alocate node
     }
     n->pid = pid;
-    n->burstLeft = burst;
+    n->burst = burst;
+    n->size = size;
     if (q->last == NULL)
     {     
         q->first = n;                                         // No process in queue, so p is the first

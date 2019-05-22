@@ -9,8 +9,8 @@
      typedef struct node    
     {
         int pid; 
-        int burstLeft; 
-        int size;
+        int burst;
+        int size; 
         struct node * next;
     } node;
 
@@ -29,6 +29,6 @@
     int removeFromQueue (queue * q);
 
     // Receives a process pid and a queue and inserts the process into the end of the queue. Returns pid or -1 if it couldn't insert.
-    int insertIntoQueue (int pid, int burst,queue * q);
+    int insertIntoQueue (int pid, int burst, int size, queue * q);
 
 #endif

@@ -6,6 +6,7 @@
     #include "../queue/queue.h"
     #include "../disk/disk.h"
     #include "../timer/timer.h"
+    #include "../swapper/swapper.h"
 
     typedef struct fcfsArgs 
     {

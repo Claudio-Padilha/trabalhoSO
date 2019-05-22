@@ -1,15 +1,15 @@
 #include "disk.h"
 
-disk * newDisk(process * ps)
+disk * newDisk()
 {
     disk * d = (disk *) malloc(sizeof(disk));
-    d->list = ps;
+    d->list = NULL;
     d->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
 
     return d;
 }
 
-process * getFromDisk (int pid, disk * d)
+process * copyFromDisk (int pid, disk * d)
 {
     process * p = d->list;                                                      // gets first element of the list
     process * prev = NULL;
@@ -23,16 +23,7 @@ process * getFromDisk (int pid, disk * d)
     {
         printf("ERROR! Process Loss");                                           // process not in disk
     }
-    else                                                                       //  procces found. Pointers adjustment.
-    {
-        if (prev == NULL)                                                      // It was the first process
-        {
-            d->list = p->next;                                                // Removes reference from disk
-        }else                      
-        {
-            prev->next = p->next;                                              // Removes reference from disk 
-        }
-    }
+    
 
     return p;
 }

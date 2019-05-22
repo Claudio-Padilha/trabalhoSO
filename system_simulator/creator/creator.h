@@ -9,12 +9,11 @@
 
     typedef struct creatorArgs
     {
-        process * ps;                                        // ordered list of processes
+        process * p;                                         // The process to be created
         queue * entry;
-        int n;                                               // number of processes
     } creatorArgs;
 
     // receives the list of processes oredered by arrival time (creation time)
-    void * startCreator (void * param);
+    void * creator (void * param);
 
 #endif

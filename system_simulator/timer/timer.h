@@ -12,6 +12,7 @@
         int currentTime;            // total elapsed time
         
         pthread_mutex_t lock;
+        pthread_cond_t cond;
     }timer;
 
     typedef struct timerArgs 

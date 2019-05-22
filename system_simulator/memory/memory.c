@@ -5,7 +5,6 @@ memory * newMemory (int size)
     memory * m = (memory *) malloc(sizeof(memory));
     m->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
     m->size = size;
-    m->used = 0;
     m->biggestInterval = size;
 
     return m;
@@ -16,7 +15,7 @@ int getBiggestInterval (memory * mem)
     process * aux = mem->list;
     int biggest = 0;
 
-    while (aux->next != NULL)                                           // Verifies which interval (except the last one) is bigger than current biggest
+    while (aux->next != NULL)                                           // Verifies which interval (except the last one) is the biggest
     {
         if ((aux->next->memPosition - (aux->memPosition + aux->size)) > biggest)
         {
@@ -74,7 +73,7 @@ process * getFromMemory (int pid, memory * m)
         {
             newInterval = p->size + (p->memPosition - (prev->memPosition + prev->size));
         }
-        else                      
+        else                                                                    // It was between processes        
         {
             // Gets the size of the new created interval
             newInterval = p->size + (p->next->memPosition - (p->memPosition + p->size)) + (p->memPosition - (prev->memPosition + prev->size));
@@ -98,13 +97,13 @@ process * firstFromMemory (memory * m)
     process * ret = NULL;
     if (m->list != NULL)
     {
-        ret = m->list;                              // gets process from memory
-        m->list = m->list->next;                    // removes process reference from memory
-        ret->memPosition = -1;                      // updates process memory position (none)
+        ret = m->list;                              // Gets process from memory
+        m->list = m->list->next;                    // Removes process reference from memory
+        ret->memPosition = -1;                      // Updates process memory position (none)
         
-        if (m->list->memPosition > m->biggestInterval)
+        if (m->list->memPosition > m->biggestInterval)      
         {
-            m->biggestInterval = m->list->memPosition;
+            m->biggestInterval = m->list->memPosition;          // Adjusts biggest interval if necessary
         }
     }
     
@@ -122,11 +121,11 @@ int insertIntoMemory (process * p, memory * mem, disk * d)
 
         return p->id;
     }
-    else
+    else                                                        // Memory is not empty
     {
-        if (mem->biggestInterval >= p->size)                                // there is space in memory
+        if (mem->biggestInterval >= p->size)                                // There is space in memory
         {
-            int flag = 0;                                                   // control for biggestInterval adjustment (if necessary)
+            int flag = 0;                                                   // Control for biggestInterval adjustment (if necessary)
             while (aux->next != NULL)                                      // Looks for a space to fit the process p between processes
             {   
                 if (aux->next->memPosition - (aux->memPosition + aux->size) >= p->size)         // there is space between processes
