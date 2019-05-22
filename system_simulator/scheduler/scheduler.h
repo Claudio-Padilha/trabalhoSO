@@ -25,6 +25,9 @@
         timer * t;
     } rrArgs;
 
+    // This is used as a thread by FCFS scheduler. This waits for the timer to signal and move a process from entry queue to rady queue
+    void * waitForTimer (void * param);
+
     // schedulerFCFS : FIFO politics
     // moves processes from entry queue to ready queue
     void * schedulerFCFS (void * param); 
