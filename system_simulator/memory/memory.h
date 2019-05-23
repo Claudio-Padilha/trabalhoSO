@@ -34,7 +34,7 @@
 	process * getFromMemory (int pid, memory * m);
 
 	// Inserts a process into memory. Removes process(es) from memory and put into disk if necessary. Uses first fit
-	int InsertIntoMemory (process * p, memory * mem, disk * d);
+	int insertIntoMemory (process * p, memory * mem, disk * d);
 	
 #endif
 					

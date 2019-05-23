@@ -2,6 +2,7 @@
 #define SHIPPER_H
 
     #include <time.h>
+    #include <stdio.h>
     #include <pthread.h>
     #include "../memory/memory.h"
     #include "../swapper/swapper.h"

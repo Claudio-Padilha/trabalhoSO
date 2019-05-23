@@ -2,6 +2,7 @@
 #define  QUEUE_H
 
     #include "../process/process.h"
+    #include <stdio.h>
     #include <pthread.h>
     #include <stdlib.h>
 

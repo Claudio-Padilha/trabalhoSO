@@ -2,6 +2,7 @@
 #define  SCHEDULER_H
 
     #include <time.h>
+    #include <stdio.h>
     #include "../memory/memory.h"
     #include "../queue/queue.h"
     #include "../disk/disk.h"

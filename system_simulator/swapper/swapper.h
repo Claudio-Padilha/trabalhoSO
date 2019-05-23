@@ -2,6 +2,7 @@
 #define SWAPPER_H
 
     #include "../disk/disk.h"
+    #include <stdio.h>
     #include "../memory/memory.h"
     #include "../process/process.h"
 

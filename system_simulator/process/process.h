@@ -2,6 +2,7 @@
 #define  PROCESS_H
 
     #include <stdlib.h>
+    #include <stdio.h>
     #include <pthread.h>
 
     typedef struct process 

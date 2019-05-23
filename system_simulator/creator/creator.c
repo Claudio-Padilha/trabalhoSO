@@ -7,4 +7,6 @@ void * creator (void * param)                                          // Receiv
     pthread_mutex_lock(&args->entry->lock);
         insertIntoQueue(args->p->id, args->p->burstTime, args->p->size, args->entry);
     pthread_mutex_unlock(&args->entry->lock);
+
+    return NULL;
 }

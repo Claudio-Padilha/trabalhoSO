@@ -11,7 +11,7 @@ void * shipper (void * param)
 
         if (p == NULL)                                                              // process not in memory
         {
-            swappArgs * sw;
+            swappArgs * sw = malloc(sizeof(swappArgs));
             sw->d = args->d;                                                         // aquire arguments for swapper in a structure
             sw->mem = args->mem;
             sw->pid = args->pid;
@@ -32,10 +32,12 @@ void * shipper (void * param)
     pthread_mutex_unlock(&args->d->lock);
     pthread_mutex_unlock(&args->ready->lock);
 
-    timerArgs * tmArgs;
+    timerArgs * tmArgs = (timerArgs *) malloc(sizeof(timerArgs));
     tmArgs->cpuUsage = cpuTime;
     tmArgs->t = args->t;
 
     pthread_t tm;
     pthread_create(&tm, NULL, resetTimer, (void *) tmArgs);                         // reset the timer
+
+    return NULL;
 }

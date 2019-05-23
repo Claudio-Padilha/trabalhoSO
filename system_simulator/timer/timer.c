@@ -23,4 +23,6 @@ void * resetTimer (void * param)
     }
 
     pthread_cond_broadcast(&args->t->condBurst);                            // Signals to Round Robin    
+
+    return NULL;
 }

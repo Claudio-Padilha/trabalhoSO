@@ -154,7 +154,7 @@ int insertIntoMemory (process * p, memory * mem, disk * d)
             {
                 if (mem->size - 1 - (aux->memPosition + aux->size) == mem->biggestInterval) // Process insertion will affect biggestInterval size
                 {
-                    flag == 1;
+                    flag = 1;
                 }
                 aux->next = p;
                 p->memPosition = aux->memPosition + aux->size;
@@ -183,7 +183,7 @@ int insertIntoMemory (process * p, memory * mem, disk * d)
 
         if (mem->list->next == NULL)                                // Process is alone in memory
         {
-            mem->biggestInterval == mem->size - mem->list->size;
+            mem->biggestInterval = mem->size - mem->list->size;
         } else if ((mem->list->next->memPosition - mem->list->size) > mem->biggestInterval)     // New biggest interval is necessary
         {
             mem->biggestInterval = (mem->list->next->memPosition - mem->list->size);

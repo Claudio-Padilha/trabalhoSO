@@ -2,6 +2,7 @@
 #define CREATOR_H
 
     #include <unistd.h>
+    #include <stdio.h>
     #include <pthread.h>
     #include <time.h>
     #include "../queue/queue.h"

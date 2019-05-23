@@ -12,11 +12,8 @@ disk * newDisk()
 process * copyFromDisk (int pid, disk * d)
 {
     process * p = d->list;                                                      // gets first element of the list
-    process * prev = NULL;
-
     while (p != NULL && pid != p->id)
     {
-        prev = p;
         p = p->next;
     }
     if (p == NULL)  
@@ -32,4 +29,6 @@ int insertIntoDisk (process * p, disk * d)
 {
     p->next = d->list;
     d->list = p;
+
+    return p->id;
 }

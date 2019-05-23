@@ -9,10 +9,10 @@ void * waitForTimer (void * param)
         pthread_mutex_lock(&args->entry->lock);
         if (args->entry->first != NULL)                         // If entry queue is not empty, moves a process from entry queue to ready queue
         {
-            swappArgs * sargs;
+            swappArgs * sargs = (swappArgs *) malloc(sizeof(swappArgs));
             sargs->d = args->d;
             sargs->mem = args->mem;
-            sargs->pid = args->entry->first;
+            sargs->pid = args->entry->first->pid;
             int pid = args->entry->first->pid;
             int burst = args->entry->first->burst;
             int size = args->entry->first->size;
@@ -52,14 +52,14 @@ void * schedulerFCFS (void * param)
         if (args->entry->first == NULL)                                             // Entry queue is empty
         {
             pthread_mutex_unlock(&args->entry->lock);
-            pthreadmutex_unlock(&args->mem->lock);
+            pthread_mutex_unlock(&args->mem->lock);
             continue;
         }else if (args->mem->biggestInterval >= args->entry->first->size)           // queue is not empty and there is space in memory
         {
-            swappArgs * sargs;
+            swappArgs * sargs = (swappArgs *) malloc(sizeof(swappArgs));
             sargs->d = args->d;
             sargs->mem = args->mem;
-            sargs->pid = args->entry->first;                                        // Argumrnts for swapper
+            sargs->pid = args->entry->first->pid;                                        // Argumrnts for swapper
             int pid = args->entry->first->pid;
             int burst = args->entry->first->burst;
             int size = args->entry->first->size;
@@ -96,7 +96,7 @@ void * schedulerRR (void * param)
             continue;
         }
         // Queue is not empty
-        shipperArgs * sargs;
+        shipperArgs * sargs = (shipperArgs *) malloc(sizeof(shipperArgs));
         sargs->d = args->d;
         sargs->mem = args->mem;                                 // Argumrnts for shipper
         sargs->pid = args->ready->first->pid;
