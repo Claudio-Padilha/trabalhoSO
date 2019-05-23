@@ -1,6 +1,6 @@
 #include "queue.h"
 
-newQueue()
+queue * newQueue()
 {
     queue * q = (queue *) malloc(sizeof(queue));
     q->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;

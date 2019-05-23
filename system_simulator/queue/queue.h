@@ -23,7 +23,7 @@
     } queue;
 
      // Creates new queue
-    newQueue();
+    queue * newQueue();
 
     // Receives a queue, remove the first process from it and return the removed process pid. Returns -1 if process not in queue.
     int removeFromQueue (queue * q);
