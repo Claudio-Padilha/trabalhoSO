@@ -17,6 +17,7 @@ void * resetTimer (void * param)
     timerArgs * args = (timerArgs *) param;
 
     sleep(args->cpuUsage);
+    args->currentTime += args->cpuUsage;
     if (args->cpuUsage < args->t->timeQuantum)                             // Process ended burst time
     {
         pthread_cond_broadcast(&args->t->condBurst);                       // Signals to FCFS
