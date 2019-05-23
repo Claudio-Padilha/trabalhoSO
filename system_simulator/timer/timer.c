@@ -15,10 +15,12 @@ timer * newTimer(int tq)
 void * resetTimer (void * param)
 {
     timerArgs * args = (timerArgs *) param;
-    unsigned int useTime = workOnProcess(args->p, args->t->timeQuantum);                  // updates process burst time and return the elapsed time
 
-    sleep(useTime);
-    args->t->currentTime += useTime;
+    sleep(args->cpuUsage);
+    if (args->cpuUsage < args->t->timeQuantum)                             // Process ended burst time
+    {
+        pthread_cond_broadcast(&args->t->condBurst);                       // Signals to FCFS
+    }
 
-    pthread_exit(NULL);
+    pthread_cond_broadcast(&args->t->condBurst);                            // Signals to Round Robin    
 }

@@ -5,6 +5,8 @@
     #include <unistd.h>
     #include <pthread.h>
     #include "../cpu/cpu.h"
+    #include "../process/process.h"
+    #include "../timer/timer.h"
 
     typedef struct timer
     {
@@ -13,13 +15,13 @@
         
         pthread_mutex_t lock;
         pthread_cond_t condTq;      // Condition variable used to signal the end of time quantum
-        pthread_cond_t condBurst;   // Condition variable used to signal the end of a process burst time
+        pthread_cond_t condBurst;   // Condition variable used to signal the end of a process burst
     }timer;
 
     typedef struct timerArgs 
     {
-        process * p;
         timer * t;
+        int cpuUsage;               // Amount of CPU time used (It could be time quantum or the amount left of procces burst time left)
     }timerArgs;
 
     // creates a new timer

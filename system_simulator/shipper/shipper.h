@@ -7,12 +7,14 @@
     #include "../swapper/swapper.h"
     #include "../process/process.h"
     #include "../timer/timer.h"
+    #include "../queue/queue.h"
 
     typedef struct shipperArgs 
     {
         int pid;
         memory * mem;
         disk * d;
+        queue * ready;
         timer * t;
     }shipperArgs;
 
