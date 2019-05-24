@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "scheduler.h": "c"
+        "scheduler.h": "c",
+        "swapper.h": "c",
+        "shipper.h": "c",
+        "time.h": "c"
     }
 }
