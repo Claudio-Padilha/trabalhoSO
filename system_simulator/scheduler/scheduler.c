@@ -63,11 +63,25 @@ void * schedulerFCFS (void * param)
             int pid = args->entry->first->pid;
             int burst = args->entry->first->burst;
             int size = args->entry->first->size;
-            removeFromQueue (args->entry);
+            
+            removeFromQueue (args->entry);                                              // Removes process from entry queue               
+
+            struct tm * currentTime;
+            time_t segundos;
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Escalonador FCFS de longo prazo escolheu e retirou o processo %d da fila de entrada.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, pid);
+
             pthread_mutex_unlock(&args->entry->lock);
             pthread_mutex_unlock(&args->mem->lock);
             
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Escalonador FCFS de longo prazo solicitou que o Swapper traga %d a memoria.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, pid);
             
+
             pthread_t swap;
             pthread_create(&swap, NULL, swapper, (void *) sargs);         // Calls swapper and put the process removed from entry queue in memory
             int check = pthread_join(swap, NULL);                         // Waits untill swapper puts process in memory
@@ -76,6 +90,10 @@ void * schedulerFCFS (void * param)
             {
                 pthread_mutex_lock(&args->ready->lock);
                 insertIntoQueue(pid, burst, size, args->ready);     // Puts the process in ready queue
+                time(&segundos);   
+                currentTime = localtime(&segundos);
+                printf("Time: %d:%d:%d - Escalonador FCFS de longo prazo colocou %d na fila de prontos.\n", 
+                currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, pid);
                 pthread_mutex_unlock(&args->ready->lock); 
             }else{
                 printf("Error with join between swapper and FCFS scheduler!");
@@ -101,13 +119,19 @@ void * schedulerRR (void * param)
         sargs->mem = args->mem;                                 // Argumrnts for shipper
         sargs->pid = args->ready->first->pid;
         sargs->t = args->t;
-
-        pthread_mutex_lock(&args->ready->lock);
+        
         removeFromQueue(args->ready);                            // Removes process from ready queue
         pthread_mutex_unlock(&args->ready->lock);
 
         pthread_t ship;
         pthread_create(&ship, NULL, shipper, (void *) sargs);   // Moves the process to shipper
+
+        struct tm * currentTime;
+        time_t segundos;
+        time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Escalonador Round-Robin de CPU escolheu o processo %d, retirou-o da fila de prontos e o encaminhou ao Despachante.\n", 
+        currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, sargs->pid);
     }
     
 }

@@ -21,7 +21,6 @@ int main ()
     int processSize;
     int creationTime;
     int burst;
-    int totalBurst = 0;
     process * p = NULL;
 
     if (scanf("%d %d %d", &memorySize, &numberProcesses, &timeQuantum))         // Reads main memory size, number of processes and time quantum parameters.
@@ -31,29 +30,14 @@ int main ()
     memory * m = newMemory(memorySize);                                             // Creates new memory
     queue * entry = newQueue();                                                     // Creates new entry queue
     queue * ready = newQueue();                                                       // Creates new ready queue
+    timer * t = newTimer(timeQuantum, numberProcesses);                                    // Creates new timer
 
-    printf("Time: %s - Inicio da observacao.", __TIME__);
+     struct tm * currentTime;
+     time_t segundos;
+     time(&segundos);   
+     currentTime = localtime(&segundos);
 
-    for (int i = 0; i < numberProcesses; i++)                               
-    {
-        if(scanf("%d %d %d %d", &pid, &processSize, &creationTime, &burst))      // Reads a process parameters. 
-        {}  // if avoids warning
-        totalBurst += burst;
-        p = newProcess(pid, processSize, creationTime, burst);                      // Creates the processes
-
-        pthread_mutex_lock(&d->lock);
-            insertIntoDisk(p, d);                                                   // Puts created process in disk
-        pthread_mutex_unlock(&d->lock);
-
-        pthread_t cr;
-        creatorArgs * crArgs = (creatorArgs *) malloc(sizeof(creatorArgs));
-        crArgs->entry = entry;
-        crArgs->p = p;
-        pthread_create(&cr, NULL, creator, (void *) crArgs);                        // Creates a creator thread for each process
-    }
-
-    timer * t = newTimer(timeQuantum, totalBurst);                                    // Creates new timer
-
+    printf("Time: %d:%d:%d - Inicio da observacao.\n", currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec);
 
     pthread_t fcfs;
     fcfsArgs * fcArgs = (fcfsArgs *) malloc(sizeof(fcfsArgs));
@@ -73,6 +57,23 @@ int main ()
     roundArgs->t = t;
 
     pthread_create(&rr, NULL, schedulerRR, (void *) roundArgs);                    // Creates scheduler RR
+
+    for (int i = 0; i < numberProcesses; i++)                               
+    {
+        if(scanf("%d %d %d %d", &pid, &processSize, &creationTime, &burst))      // Reads a process parameters. 
+        {}  // if avoids warning
+        p = newProcess(pid, processSize, creationTime, burst);                      // Creates the processes
+
+        pthread_mutex_lock(&d->lock);
+            insertIntoDisk(p, d);                                                   // Puts created process in disk
+        pthread_mutex_unlock(&d->lock);
+
+        pthread_t cr;
+        creatorArgs * crArgs = (creatorArgs *) malloc(sizeof(creatorArgs));
+        crArgs->entry = entry;
+        crArgs->p = p;
+        pthread_create(&cr, NULL, creator, (void *) crArgs);                        // Creates a creator thread for each process
+    }
 
     pthread_cond_wait(&t->condEnd, &t->lock);                           // Waits for timer signal end of execution
 

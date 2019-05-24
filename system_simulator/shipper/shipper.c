@@ -2,6 +2,8 @@
 
 void * shipper (void * param)
 {
+    int flag = 0;                                                                   // Indicates if a process ended bursttime
+
     shipperArgs * args = (shipperArgs *) param;
     pthread_mutex_lock(&args->mem->lock);                       
     pthread_mutex_lock(&args->d->lock);
@@ -26,15 +28,20 @@ void * shipper (void * param)
         if (p->burstTime > 0)                                       
         {
             insertIntoQueue(p->id, p->burstTime, p->size, args->ready);             // Puts process bak in ready queue if it still has burstTime
+        }else
+        {
+            flag = 1;
         }
-
+        
+        timerArgs * tmArgs = (timerArgs *) malloc(sizeof(timerArgs));
+        tmArgs->cpuUsage = cpuTime;
+        tmArgs->t = args->t;
+        tmArgs->ended = flag;
+        tmArgs->pid = p->id;
+        
     pthread_mutex_unlock(&args->mem->lock);                       
     pthread_mutex_unlock(&args->d->lock);
     pthread_mutex_unlock(&args->ready->lock);
-
-    timerArgs * tmArgs = (timerArgs *) malloc(sizeof(timerArgs));
-    tmArgs->cpuUsage = cpuTime;
-    tmArgs->t = args->t;
 
     pthread_t tm;
     pthread_create(&tm, NULL, resetTimer, (void *) tmArgs);                         // reset the timer

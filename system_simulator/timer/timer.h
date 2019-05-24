@@ -12,9 +12,9 @@
     typedef struct timer
     {
         int timeQuantum;            // slice of max time of cpu usage per acess
-        int currentTime;            // total elapsed time
+        int numberProcesses;        // total number of processes
 
-        int burstTotal;             // Receives the sum of all burst times
+        int endedProcesses;           // total number of processes ended
         
         pthread_mutex_t lock;
         pthread_cond_t condTq;      // Condition variable used to signal the end of time quantum
@@ -26,10 +26,12 @@
     {
         timer * t;
         int cpuUsage;               // Amount of CPU time used (It could be time quantum or the amount left of procces burst time left)
+        int ended;                  // flag indicating if process ended burst
+        int pid;                    // pid of process currently in CPU
     }timerArgs;
 
     // creates a new timer
-    timer * newTimer(int tq, int burstTotal);
+    timer * newTimer(int tq, int numberProcesses);
 
     // resets the timer and wait until cpu is done working on process p 
     void * resetTimer (void * param);

@@ -1,11 +1,11 @@
 #include "timer.h"
 
-timer * newTimer(int tq, int burstTotal)
+timer * newTimer(int tq, int numberProcesses)
 {
     timer * t = (timer *) malloc(sizeof(timer));
     t->timeQuantum = tq;
-    t->currentTime = 0;
-    t->burstTotal = burstTotal;
+    t->numberProcesses = numberProcesses;
+    t->endedProcesses = 0;
     t->lock = (pthread_mutex_t) PTHREAD_MUTEX_INITIALIZER;
     t->condTq = (pthread_cond_t) PTHREAD_COND_INITIALIZER;
     t->condBurst = (pthread_cond_t) PTHREAD_COND_INITIALIZER;
@@ -19,16 +19,22 @@ void * resetTimer (void * param)
     timerArgs * args = (timerArgs *) param;
 
     sleep(args->cpuUsage);
-    args->t->currentTime += args->cpuUsage;
 
-    if (args->cpuUsage < args->t->timeQuantum)                             // Process ended burst time
+    if (args->ended)                                                    // Process ended burst time
     {
+        args->t->endedProcesses ++;
         pthread_cond_broadcast(&args->t->condBurst);                       // Signals to FCFS
     }
 
+    struct tm * currentTime;
+    time_t segundos;
+    time(&segundos);   
+    currentTime = localtime(&segundos);
+    printf("Time: %d:%d:%d - Timer informa ao Escalonador Round-Robin de CPU que o processo %d atualmente em execucao precisa ser retirado da CPU.\n", 
+    currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid);
     pthread_cond_broadcast(&args->t->condBurst);                            // Signals to Round Robin 
 
-    if (args->t->burstTotal == args->t->currentTime)                        // All processes ended
+    if (args->t->numberProcesses == args->t->endedProcesses)              // All processes ended
     {
         pthread_cond_broadcast(&args->t->condEnd);                        // Signals the end of the execution to simulaotr
     }   
