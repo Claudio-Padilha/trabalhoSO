@@ -44,9 +44,18 @@ int main ()
     fcArgs->entry = entry;                                                          // Gets arguments for FCFS scheduler
     fcArgs->mem = m;
     fcArgs->ready = ready;
-    fcArgs->t = t;
+    fcArgs->t = t; 
     
-    pthread_create(&fcfs, NULL, schedulerFCFS, (void *) fcArgs);                    // Creates scheduler FCFS
+    pthread_create(&fcfs, NULL, schedulerFCFS, (void *) fcArgs);                    // Creates scheduler FCFS to put process when there is space in memory
+
+    pthread_t waitTimer;
+    fcfsArgs * waitTimerArgs = (fcfsArgs *) malloc(sizeof(fcfsArgs));
+    waitTimerArgs->d = d;
+    waitTimerArgs->entry = entry;                                                          // Gets arguments for FCFS scheduler
+    waitTimerArgs->mem = m;
+    waitTimerArgs->ready = ready;
+    waitTimerArgs->t = t; 
+    pthread_create(&waitTimer, NULL, waitForTimer, (void *) waitTimerArgs);                  // Creates FCFS's thread that will wait for timer signal.
 
     pthread_t rr;
     rrArgs * roundArgs = (rrArgs *) malloc(sizeof(rrArgs));

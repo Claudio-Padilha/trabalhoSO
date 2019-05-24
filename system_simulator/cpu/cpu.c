@@ -3,7 +3,7 @@
 int workOnProcess (process * p, int tq)
 {
         int ret = tq;
-        if (p->burstTime < tq)
+        if (p->burstTime > tq)
         {
                 p->burstTime -= tq;
         }else

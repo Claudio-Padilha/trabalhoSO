@@ -27,20 +27,20 @@ void * resetTimer (void * param)
     {
         args->t->endedProcesses ++;
 
+        pthread_cond_broadcast(&args->t->condBurst);                       // Signals to FCFS
+
         time(&segundos);   
         currentTime = localtime(&segundos);
         printf("Time: %d:%d:%d - Processo %d terminou sua execucao.\n", 
         currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid);
-
-        pthread_cond_broadcast(&args->t->condBurst);                       // Signals to FCFS
     }
+
+    pthread_cond_broadcast(&args->t->condTq);                            // Signals to Round Robin 
 
     time(&segundos);   
     currentTime = localtime(&segundos);
     printf("Time: %d:%d:%d - Timer informa ao Escalonador Round-Robin de CPU que o processo %d atualmente em execucao precisa ser retirado da CPU.\n", 
     currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid);
-
-    pthread_cond_broadcast(&args->t->condBurst);                            // Signals to Round Robin 
 
     if (args->t->numberProcesses == args->t->endedProcesses)              // All processes ended
     {

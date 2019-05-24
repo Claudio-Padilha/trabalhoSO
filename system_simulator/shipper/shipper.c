@@ -11,7 +11,7 @@ void * shipper (void * param)
 
         process * p = copyFromMemory(args->pid, args->mem);                         // Tries to coppy the  process from memory. There is still a reference in memory
 
-        struct tm * currentTime;
+        struct tm * currentTime;                                                    // used to print time
         time_t segundos;
 
         if (p == NULL)                                                              // process not in memory
@@ -42,11 +42,10 @@ void * shipper (void * param)
         printf("Time: %d:%d:%d - Despachante percebe que o processo %d esta na memoria.\n", 
         currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid); 
 
+        pthread_mutex_lock(&args->t->lock);
         int cpuTime = workOnProcess(p, args->t->timeQuantum);                   // Consumes tq or burstLeft (whichever is smaller) of process burst time and returns it
-        if (p->burstTime > 0)                                       
-        {
-            insertIntoQueue(p->id, p->burstTime, p->size, args->ready);             // Puts process bak in ready queue if it still has burstTime
-        }else
+        pthread_mutex_unlock(&args->t->lock);
+        if (p->burstTime < 0)
         {
             flag = 1;
         }
@@ -63,6 +62,13 @@ void * shipper (void * param)
 
     pthread_t tm;
     pthread_create(&tm, NULL, resetTimer, (void *) tmArgs);                         // reset the timer
+
+    if (p->burstTime > 0)                                       
+    {   
+        pthread_mutex_lock(&args->ready->lock);
+        insertIntoQueue(p->id, p->burstTime, p->size, args->ready);             // Puts process back in ready queue if it still has burstTime
+        pthread_mutex_unlock(&args->ready->lock);
+    }
 
     currentTime = localtime(&segundos);
     printf("Time: %d:%d:%d - Despachante reiniciou o Timer com tq e liberou a CPU ao processo %d.\n", 
