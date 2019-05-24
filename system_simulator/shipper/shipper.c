@@ -11,8 +11,15 @@ void * shipper (void * param)
 
         process * p = copyFromMemory(args->pid, args->mem);                         // Tries to coppy the  process from memory. There is still a reference in memory
 
+        struct tm * currentTime;
+        time_t segundos;
+
         if (p == NULL)                                                              // process not in memory
         {
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Despachante percebe que o processo id esta no disco e solicita que o Swapper traga %d a memoria.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid); 
             swappArgs * sw = malloc(sizeof(swappArgs));
             sw->d = args->d;                                                         // aquire arguments for swapper in a structure
             sw->mem = args->mem;
@@ -21,8 +28,19 @@ void * shipper (void * param)
             pthread_t swa;
             pthread_create(&swa, NULL, swapper, (void *) sw);                      // call swapper as a thread
             pthread_join(swa, NULL);                                               // Waits untill swapper brings process from disk to memory
+
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Despachante eh avisado pelo Swapper que o processo %d esta na memoria.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid);
+
             p = copyFromMemory(args->pid, args->mem);                         // Copies the  process from memory. There is still a reference in memory   
         }
+
+        time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Despachante percebe que o processo %d esta na memoria.\n", 
+        currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid); 
 
         int cpuTime = workOnProcess(p, args->t->timeQuantum);                   // Consumes tq or burstLeft (whichever is smaller) of process burst time and returns it
         if (p->burstTime > 0)                                       
@@ -45,6 +63,10 @@ void * shipper (void * param)
 
     pthread_t tm;
     pthread_create(&tm, NULL, resetTimer, (void *) tmArgs);                         // reset the timer
+
+    currentTime = localtime(&segundos);
+    printf("Time: %d:%d:%d - Despachante reiniciou o Timer com tq e liberou a CPU ao processo %d.\n", 
+    currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid); 
 
     return NULL;
 }

@@ -112,9 +112,19 @@ process * firstFromMemory (memory * m)
 
 int insertIntoMemory (process * p, memory * mem, disk * d)                
 { 
+
+    struct tm * currentTime;
+    time_t segundos;
+
     process * aux = mem->list;                                     // Gets first process
     if (aux == NULL)                                             // Memory is empty.
     {
+
+        time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Swapper percebe que ha espaco no processo %d na memoria.\n", 
+        currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, p->id);
+
         mem->list = p;
         p->memPosition = 0;
         mem->biggestInterval = mem->size - p->size;
@@ -125,6 +135,12 @@ int insertIntoMemory (process * p, memory * mem, disk * d)
     {
         if (mem->biggestInterval >= p->size)                                // There is space in memory
         {
+
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Swapper percebe que ha espaco no processo %d na memoria.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, p->id);
+
             int flag = 0;                                                   // Control for biggestInterval adjustment (if necessary)
             while (aux->next != NULL)                                      // Looks for a space to fit the process p between processes
             {   
@@ -168,16 +184,30 @@ int insertIntoMemory (process * p, memory * mem, disk * d)
             }
         }
 
+        time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Swapper percebe que nao ha espaco no processo %d na memoria.\n", 
+        currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, p->id);
 
         // It's necessary to move process(es) from memory to disk                                                            
         process * aux;
         while (mem->list->memPosition < p->size)                      // Assumes a process is never too big for memory
         {   
             aux = firstFromMemory(mem);                                 // Removes first process from memory
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Swapper retirou o processo %d para liberar espaco na memoria, e o enviou ao disco.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, aux->id);
             insertIntoDisk(aux, d);                                   // Insert process into disk
         }
 
         p->memPosition = 0;                                           // Insert process in the begining of the memory
+
+        time(&segundos);   
+        currentTime = localtime(&segundos);
+        printf("Time: %d:%d:%d - Swapper traz o processo %d do disco e o coloca na memoria.\n", 
+        currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, p->id);
+        
         p->next = mem->list;                                          
         mem->list = p;    
 

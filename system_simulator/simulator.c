@@ -32,11 +32,10 @@ int main ()
     queue * ready = newQueue();                                                       // Creates new ready queue
     timer * t = newTimer(timeQuantum, numberProcesses);                                    // Creates new timer
 
-     struct tm * currentTime;
-     time_t segundos;
-     time(&segundos);   
-     currentTime = localtime(&segundos);
-
+    struct tm * currentTime;
+    time_t segundos;
+    time(&segundos);   
+    currentTime = localtime(&segundos);
     printf("Time: %d:%d:%d - Inicio da observacao.\n", currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec);
 
     pthread_t fcfs;
@@ -75,7 +74,11 @@ int main ()
         pthread_create(&cr, NULL, creator, (void *) crArgs);                        // Creates a creator thread for each process
     }
 
-    pthread_cond_wait(&t->condEnd, &t->lock);                           // Waits for timer signal end of execution
+    pthread_cond_wait(&t->condEnd, &t->lock);                           // Waits for timer signal to end the execution
+
+    time(&segundos);   
+    currentTime = localtime(&segundos);
+    printf("Time: %d:%d:%d - Termino da observacao.\n", currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec);
 
     return 0;
 }

@@ -86,14 +86,21 @@ void * schedulerFCFS (void * param)
             pthread_create(&swap, NULL, swapper, (void *) sargs);         // Calls swapper and put the process removed from entry queue in memory
             int check = pthread_join(swap, NULL);                         // Waits untill swapper puts process in memory
 
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Swapper avisa o Escalonador FCFS de longo prazo que o processo %d esta na memoria.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, pid);
+
             if (check == 0)                                         // Join with swapper was successful
             {
                 pthread_mutex_lock(&args->ready->lock);
                 insertIntoQueue(pid, burst, size, args->ready);     // Puts the process in ready queue
+
                 time(&segundos);   
                 currentTime = localtime(&segundos);
                 printf("Time: %d:%d:%d - Escalonador FCFS de longo prazo colocou %d na fila de prontos.\n", 
                 currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, pid);
+
                 pthread_mutex_unlock(&args->ready->lock); 
             }else{
                 printf("Error with join between swapper and FCFS scheduler!");
