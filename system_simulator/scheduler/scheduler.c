@@ -122,6 +122,7 @@ void * schedulerRR (void * param)
             sargs->d = args->d;
             sargs->mem = args->mem;                                 // Argumrnts for shipper
             sargs->pid = args->ready->first->pid;
+            sargs->ready = args->ready;
             sargs->t = args->t;
             
             removeFromQueue(args->ready);                            // Removes process from ready queue
