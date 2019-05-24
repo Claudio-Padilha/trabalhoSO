@@ -105,6 +105,35 @@ void * schedulerFCFS (void * param)
 void * schedulerRR (void * param) 
 {
     rrArgs * args =  (rrArgs *) param;
+
+    while (1)                                                       // wait for the first process to enter ready queue
+    {
+        pthread_mutex_lock(&args->ready->lock);
+        if (args->ready->first != NULL)                             // Queue is not empty
+        {
+            shipperArgs * sargs = (shipperArgs *) malloc(sizeof(shipperArgs));
+            sargs->d = args->d;
+            sargs->mem = args->mem;                                 // Argumrnts for shipper
+            sargs->pid = args->ready->first->pid;
+            sargs->t = args->t;
+            
+            removeFromQueue(args->ready);                            // Removes process from ready queue
+            pthread_mutex_unlock(&args->ready->lock);
+
+            pthread_t ship;
+            pthread_create(&ship, NULL, shipper, (void *) sargs);   // Moves the process to shipper
+
+            struct tm * currentTime;
+            time_t segundos;
+            time(&segundos);   
+            currentTime = localtime(&segundos);
+            printf("Time: %d:%d:%d - Escalonador Round-Robin de CPU escolheu o processo %d, retirou-o da fila de prontos e o encaminhou ao Despachante.\n", 
+            currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, sargs->pid);  
+            break;  
+        }else{
+           pthread_mutex_unlock(&args->ready->lock); 
+        }
+    }
     while (1)
     {
         pthread_cond_wait(&args->t->condTq, &args->t->lock);      // Waits for timer signal
