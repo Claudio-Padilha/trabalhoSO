@@ -1,15 +1,16 @@
 #include "cpu.h"
 
-int workOnProcess (process * p, int tq)
+int cpu (process * p, int tq)
 {
-        int ret = tq;
-        if (p->burstTime > tq)
+        int ret = tq;                           // Assumes tq < process burst
+
+        if (p->burst > tq)
         {
-                p->burstTime -= tq;
-        }else
-        {
-                ret = p->burstTime;
-                p->burstTime = 0;
-        }    
-        return ret; 
+                p->burst -= tq;        
+        }else {
+                ret = p->burst;
+                p->burst = 0;
+        }
+
+        return ret;    
 }

@@ -1,8 +1,8 @@
 #ifndef  CPU_H
 #define  CPU_H
 
-    #include "../process/process.h"
+#include "../process/process.h"
 
-    // Gives the process its share of cpu usage. Returns the elapsed time working on process
-    int workOnProcess (process * p, int tq);
+// Consumes burst time from process. Consumes time quantum if burst is enough or consumes the remaining burst. Returns the amount of CPU used.
+int cpu (process * p, int tq);
 #endif

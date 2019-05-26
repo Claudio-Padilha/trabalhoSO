@@ -1,20 +1,24 @@
 #ifndef CREATOR_H
 #define CREATOR_H
 
-    #include <unistd.h>
-    #include <stdio.h>
-    #include <pthread.h>
-    #include <time.h>
-    #include "../queue/queue.h"
-    #include "../process/process.h"
+#include <pthread.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <time.h>
+#include "../process/process.h"
+#include "../queue/queue.h"
+#include "../disc/disc.h"
 
-    typedef struct creatorArgs
-    {
-        process * p;                                         // The process to be created
-        queue * entry;
-    } creatorArgs;
+// Structure used to pass arguments to the creator's thread.
+typedef struct creatorArgs
+{   
+    // Process to be created.
+    process * p; 
+    // Entry queue
+    queue * entry;
+}creatorArgs;
 
-    // Receives a process and puts it in entry queue on the proper time
-    void * creator (void * param);
+// Creates the creator thread, putting the processe on entry queue on the proper time.
+void * creator (void * param);
 
 #endif

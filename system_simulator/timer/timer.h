@@ -1,7 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-    #include <stdlib.h>
+#include <stdlib.h>
     #include <stdio.h>
     #include <unistd.h>
     #include <pthread.h>
@@ -35,4 +35,5 @@
 
     // resets the timer and wait until cpu is done working on process p 
     void * resetTimer (void * param);
+
 #endif

@@ -23,8 +23,16 @@ void * resetTimer (void * param)
     struct tm * currentTime;
     time_t segundos;
 
-    if (args->ended)                                                    // Process ended burst time
+    pthread_cond_broadcast(&args->t->condTq);                            // Signals to Round Robin 
+
+    time(&segundos);   
+    currentTime = localtime(&segundos);
+    printf("Time: %d:%d:%d - Timer informa ao Escalonador Round-Robin de CPU que o processo %d atualmente em execucao precisa ser retirado da CPU.\n", 
+    currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid);
+
+    if (args->ended == 1)                                                    // Process ended burst time
     {
+
         args->t->endedProcesses ++;
 
         pthread_cond_broadcast(&args->t->condBurst);                       // Signals to FCFS
@@ -35,17 +43,9 @@ void * resetTimer (void * param)
         currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid);
     }
 
-    pthread_cond_broadcast(&args->t->condTq);                            // Signals to Round Robin 
-
-    time(&segundos);   
-    currentTime = localtime(&segundos);
-    printf("Time: %d:%d:%d - Timer informa ao Escalonador Round-Robin de CPU que o processo %d atualmente em execucao precisa ser retirado da CPU.\n", 
-    currentTime->tm_hour, currentTime->tm_min, currentTime->tm_sec, args->pid);
-
     if (args->t->numberProcesses == args->t->endedProcesses)              // All processes ended
     {
         pthread_cond_broadcast(&args->t->condEnd);                        // Signals the end of the execution to simulaotr
     }   
-
     return NULL;
 }

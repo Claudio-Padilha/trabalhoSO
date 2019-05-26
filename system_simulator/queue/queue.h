@@ -1,35 +1,37 @@
 #ifndef  QUEUE_H
 #define  QUEUE_H
 
-    #include "../process/process.h"
-    #include <stdio.h>
-    #include <pthread.h>
-    #include <stdlib.h>
+#include <pthread.h>
+#include <stdlib.h>
 
-    // Queue node structure
-     typedef struct node    
-    {
-        int pid; 
-        int burst;
-        int size; 
-        struct node * next;
-    } node;
+// Struct representing the processes on the queue.
+typedef struct node
+{   
+    // Process information.
+    int pid;
+    int burst;
+    int size;
 
-    // Lists representing entry queue and ready queue
-    typedef struct queue    
-    {
-        node * first;
-        node * last;  
-        pthread_mutex_t lock;  
-    } queue;
+    // Pointer to the next node on queue.
+    struct node * next;
+}node;
 
-     // Creates new queue
-    queue * newQueue();
+// Struct representing the entry and ready queue.
+typedef struct queue
+{
+    // begining of the queue.
+    node * first;
+    // end of the queue.
+    node * last;
 
-    // Receives a queue, remove the first process from it and return the removed process pid. Returns -1 if process not in queue.
-    int removeFromQueue (queue * q);
+    // Queue's lock.
+    pthread_mutex_t lock;
+}queue;
 
-    // Receives a process pid and a queue and inserts the process into the end of the queue. Returns pid or -1 if it couldn't insert.
-    int insertIntoQueue (int pid, int burst, int size, queue * q);
+// Creates a new node.
+node * newNode (int pid, int burst, int size);
+
+// Creates a new queue.
+queue * newQueue ();
 
 #endif

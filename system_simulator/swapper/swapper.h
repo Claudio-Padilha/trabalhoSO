@@ -1,19 +1,35 @@
 #ifndef SWAPPER_H
 #define SWAPPER_H
 
-    #include "../disk/disk.h"
-    #include <stdio.h>
-    #include "../memory/memory.h"
-    #include "../process/process.h"
+#include <pthread.h>
+#include <stdio.h>
+#include "../disc/disc.h"
+#include "../memory/memory.h"
 
-    typedef struct swappArgs
-    {
-        int pid;
-        disk * d;
-        memory * mem;
-    }swappArgs;
+// swapperArgs structure is used to pass arguments to swapper thread.
+typedef struct swapperArgs
+{
+    disc * d;
+    memory * m;
 
-    // gets a process from disk and puts it into memory.
-    void * swapper (void * param);
+    // Process id
+    int pid;
+    
+}swapperArgs;
+
+// Returns the biggest interval on memory. Used for adjustments porpouse.
+int getBiggestInterval (memory * mem);
+
+// Gets a process copy from disc.
+process * copyFromDisc (int pid, disc * d);
+
+// Removes first process from memory and returns it.
+process * firstFromMemory (memory * m);
+
+// Brings a process to memory
+int insertIntoMemory (process * p, memory * mem);
+
+// Creates swapper thread
+void * swapper (void * param);
 
 #endif

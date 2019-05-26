@@ -1,13 +1,15 @@
 #include "process.h"
 
-process * newProcess (int id, int size, int arrival, int burst)
+process * newProcess (int pid, int size, int creation, int burst)
 {
-    process * p = (process *) malloc(sizeof(process));
-    p->id = id;
-    p->size = size;
-    p->arrivalTime = arrival;
-    p->burstTime = burst;
-    p->memPosition = -1;
+    process * ret = malloc(sizeof(process));
+    ret->id = pid;
+    ret->size = size;
+    ret->creation = creation;
+    ret->burst = burst;
+    ret->memPosition = -1;
+    
+    ret->next = NULL;
 
-    return p;
+    return ret;
 }
