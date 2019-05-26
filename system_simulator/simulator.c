@@ -1,3 +1,22 @@
+/*  Alunos: Cláudio Padilha da Silva, RGA: 201719040036
+            Caio Riyousuke Miyada Tokunaga, RGA: 201719040028
+            Rodrigo Schio Wengenroth Silva, RGA: 201719040010    
+           
+    Estrutura de diretórios: A pasta raiz é a trabalhoSO. Dentro dela existe a pasta system_simulator. Dentro desta o arquivo simulator.c é a main.
+    É quem controla a execução, chama as threads dos escalonadores e do creator e crias as estruturas (disco, memória, processos, timer e as filas). As 
+    threads do shiper, do swapper e do timer são criadas internamente (em outras threads). Ainda dentro do diretório system_simulator, há um diretório
+    específico para componente do sistema (cada estrutura e thread) citados anteriormente. Dentro de cada diretório, cada componente tem o seu arquivo.c
+    arquivo.h. Os arquivos possuem comentários explicando o funcionamento e características de cada componente.
+
+    Compilação: Dentro do diretório trabalhoSO existe um make file para compilar todos os arquivos e gerar um executável chamado "simulator" dentro do
+    próprio diretório. Digit simplesmente make no terminal, dentro do diretório do arquivo make file.
+
+    Execução: Dentro do diretório trabalhoSO após o make, irá aparecer o executável simulator. Digite simplesmente ./simulator no terminal para rodar.
+
+    Entrada: Implementação que recebe números inteiros positivos, separados por espaços como parâmetros de entrada via linha de comando, seguindo as 
+    especificações do item 5 - T1:5) do enunciado do trabalho.
+*/
+
 #include <stdio.h>
 #include <time.h>
 #include <pthread.h>
